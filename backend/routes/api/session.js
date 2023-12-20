@@ -41,12 +41,26 @@ router.post('/', async (req, res, next) => {
 }
 );
 
-router.delete(
-    '/',
-    (_req, res) => {
-        res.clearCookie('token');
-        return res.json({ message: 'success' });
-    }
+router.delete('/', (_req, res) => {
+    res.clearCookie('token');
+    return res.json({ message: 'success' });
+}
+);
+//The underscore is used in order the IDEs don't warn you about an unused parameter. So, if you need to access the second parameter of the function but you won't use the first one, you can add an underscore to prevent the warning of unused parameter.
+
+router.get('/', (req, res) => {
+    const { user } = req;
+    if (user) {
+        const safeUser = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+        };
+        return res.json({
+            user: safeUser
+        });
+    } else return res.json({ user: null });
+}
 );
 
 module.exports = router;
