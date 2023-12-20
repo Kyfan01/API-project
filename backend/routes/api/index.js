@@ -1,7 +1,9 @@
 const router = require('express').Router();
 
-router.post('/test', function (req, res) {
-    res.json({ requestBody: req.body });
-});
+// GET /api/restore-user
+const { restoreUser } = require('../../utils/auth.js');
+const { User } = require('../../db/models');
+
+router.use(restoreUser);
 
 module.exports = router;
