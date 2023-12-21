@@ -1,4 +1,4 @@
-# Group Together
+# Groupr
 
 ## Database Schema Design
 
