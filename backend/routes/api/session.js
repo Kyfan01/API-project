@@ -95,7 +95,8 @@ router.delete('/', (_req, res) => {
     return res.json({ message: 'success' });
 }
 );
-//The underscore is used in order the IDEs don't warn you about an unused parameter. So, if you need to access the second parameter of the function but you won't use the first one, you can add an underscore to prevent the warning of unused parameter.
+// The underscore is used in order the IDEs don't warn you about an unused parameter.
+// So, if you need to access the second parameter of the function but you won't use the first one, you can add an underscore to prevent the warning of unused parameter.
 
 router.get('/', (req, res) => {
     const { user } = req;
@@ -111,7 +112,5 @@ router.get('/', (req, res) => {
     } else return res.json({ user: null });
 }
 );
-
-
 
 module.exports = router;
