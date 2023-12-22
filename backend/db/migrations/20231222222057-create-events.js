@@ -1,49 +1,62 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
-let options = { tableName: 'Venues' };
+let options = { tableName: 'Events' };
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Venues', {
+    await queryInterface.createTable('Events', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      venueId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Venues' },
+        onDelete: 'CASCADE'
+      },
       groupId: {
         type: Sequelize.INTEGER,
         references: { model: 'Groups' },
         onDelete: 'CASCADE'
       },
-      address: {
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      description: {
         type: Sequelize.STRING
       },
-      city: {
-        type: Sequelize.STRING
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      state: {
-        type: Sequelize.STRING
+      capacity: {
+        type: Sequelize.INTEGER
       },
-      lat: {
-        type: Sequelize.DECIMAL
+      price: {
+        type: Sequelize.INTEGER
       },
-      lng: {
-        type: Sequelize.DECIMAL
+      startDate: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      endDate: {
+        type: Sequelize.DATE,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       }
     }, options);
   },
