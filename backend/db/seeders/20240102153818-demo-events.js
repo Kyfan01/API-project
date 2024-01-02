@@ -2,9 +2,9 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
-const { Group } = require('../models');
+const { Event } = require('../models');
 
-let options = { tableName: 'Groups' };
+let options = { tableName: 'Events' };
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -20,7 +20,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await Group.bulkCreate([
+    await Event.bulkCreate([
       {
         venueId: 1,
         groupId: 1,

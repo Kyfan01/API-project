@@ -2,9 +2,9 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
-const { Group } = require('../models');
+const { GroupImage } = require('../models');
 
-let options = { tableName: 'Groups' };
+let options = { tableName: 'GroupImages' };
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -20,7 +20,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await Group.bulkCreate([
+    await GroupImage.bulkCreate([
       {
         groupId: 1,
         url: 'enum here'

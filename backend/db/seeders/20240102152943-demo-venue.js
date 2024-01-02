@@ -2,9 +2,9 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
-const { Group } = require('../models');
+const { Venue } = require('../models');
 
-let options = { tableName: 'Groups' };
+let options = { tableName: 'Venues' };
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -21,7 +21,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await Group.bulkCreate([
+    await Venue.bulkCreate([
       {
         groupId: 1,
         address: '1 League Lane',
