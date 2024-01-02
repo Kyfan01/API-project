@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**
@@ -20,52 +21,46 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-
     await Group.bulkCreate([
       {
-        organizerId: 4,
-        name: 'Leaguers',
-        about: 'This is a league team',
-        type: 'enum here',
-        private: true,
+        groupId: 1,
+        address: '1 League Lane',
         city: 'Brunswick',
-        state: 'New Jersey'
+        state: 'New Jersey',
+        lat: 1,
+        lng: 1
       },
       {
-        organizerId: 5,
-        name: 'PokemonGo',
-        about: 'This is a pokemonGo social group',
-        type: 'enum here',
-        private: false,
+        groupId: 2,
+        address: '2 Littleroot Lane',
         city: 'Niantic',
-        state: 'California'
+        state: 'California',
+        lat: 2,
+        lng: 2
       },
       {
-        organizerId: 6,
-        name: 'Museum Visitors',
-        about: 'We visit museums together',
-        type: 'enum here',
-        private: true,
+        groupId: 3,
+        address: '3 Hollywood Road',
         city: 'Los Angeles',
-        state: 'California'
+        state: 'California',
+        lat: 3,
+        lng: 3
       },
       {
-        organizerId: 7,
-        name: 'Dining Club',
-        about: 'This is a social dining club',
-        type: 'enum here',
-        private: true,
+        groupId: 4,
+        address: '4 Food Avenue',
         city: 'Cambridge',
-        state: 'Massachusetts'
+        state: 'Massachusetts',
+        lat: 4,
+        lng: 4
       },
       {
-        organizerId: 8,
-        name: 'Boston Ballers',
-        about: 'This is a basketball team',
-        type: 'enum here',
-        private: true,
+        groupId: 5,
+        address: '5 Basketball Boulevard',
         city: 'Boston',
-        state: 'Massachusetts'
+        state: 'Massachusetts',
+        lat: 5,
+        lng: 5
       }
     ])
   },
@@ -79,7 +74,7 @@ module.exports = {
      */
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      organizerId: { [Op.in]: [4, 5, 6, 7, 8] }
+      groupId: { [Op.in]: [1, 2, 3, 4, 5] }
     }, {});
   }
 };
