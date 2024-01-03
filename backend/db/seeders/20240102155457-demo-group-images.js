@@ -23,23 +23,25 @@ module.exports = {
     await GroupImage.bulkCreate([
       {
         groupId: 1,
-        url: 'enum here'
+        url: 'group1 url'
       },
       {
         groupId: 2,
-        url: 'enum here'
+        url: 'group2 url'
       },
       {
         groupId: 3,
-        url: 'enum here'
+        url: 'group3 url',
+        preview: true
       },
       {
         groupId: 4,
-        url: 'enum here'
+        url: 'group4 url',
+        preview: true
       },
       {
         groupId: 5,
-        url: 'enum here'
+        url: 'group5 url'
       }
     ])
   },

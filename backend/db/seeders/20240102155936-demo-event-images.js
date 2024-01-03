@@ -23,23 +23,23 @@ module.exports = {
     await EventImage.bulkCreate([
       {
         eventId: 1,
-        url: 'enum here'
+        url: 'event1 url'
       },
       {
         eventId: 2,
-        url: 'enum here'
+        url: 'event2 url'
       },
       {
         eventId: 3,
-        url: 'enum here'
+        url: 'event3 url'
       },
       {
         eventId: 4,
-        url: 'enum here'
+        url: 'event4 url'
       },
       {
         eventId: 5,
-        url: 'enum here'
+        url: 'event5 url'
       }
     ])
   },
