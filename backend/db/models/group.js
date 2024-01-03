@@ -1,7 +1,9 @@
 'use strict';
 const {
-  Model
+  Model, DataTypes
 } = require('sequelize');
+const Op = DataTypes.Op;
+
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     /**
@@ -45,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.STRING,
+
       allowNull: false
     },
     private: {
