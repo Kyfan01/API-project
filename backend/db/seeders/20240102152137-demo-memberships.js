@@ -45,6 +45,21 @@ module.exports = {
         userId: 8,
         groupId: 5,
         status: 'enum here'
+      },
+      {
+        userId: 7,
+        groupId: 3,
+        status: 'enum here'
+      },
+      {
+        userId: 8,
+        groupId: 3,
+        status: 'enum here'
+      },
+      {
+        userId: 8,
+        groupId: 4,
+        status: 'enum here'
       }
     ])
   },

@@ -1,7 +1,9 @@
 'use strict';
 const {
-  Model
+  Model, DataTypes
 } = require('sequelize');
+const Op = DataTypes.Op;
+
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     /**
@@ -12,12 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      Group.belongsTo(models.User, { foreignKey: 'organizerId' })
+      //Group.belongsTo(models.User, { foreignKey: 'organizerId' })
 
       Group.belongsToMany(models.User, {
         through: 'Membership',
         foreignKey: 'groupId',
-        otherKey: 'userId'
+        otherKey: 'userId',
+        as: 'Organizer'
       })
 
       Group.hasMany(models.Venue, {
@@ -45,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.STRING,
+
       allowNull: false
     },
     private: {
