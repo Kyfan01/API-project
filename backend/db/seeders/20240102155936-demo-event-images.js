@@ -31,7 +31,8 @@ module.exports = {
       },
       {
         eventId: 3,
-        url: 'event3 url'
+        url: 'event3 url',
+        preview: true
       },
       {
         eventId: 4,
@@ -39,7 +40,8 @@ module.exports = {
       },
       {
         eventId: 5,
-        url: 'event5 url'
+        url: 'event5 url',
+        preview: true
       }
     ])
   },

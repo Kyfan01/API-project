@@ -1,0 +1,145 @@
+const express = require('express')
+const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth')
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
+const router = express.Router();
+
+// GET ALL EVENTS (might need to change attending based on status)
+router.get('/', async (req, res) => {
+    const events = await Event.findAll(
+        {
+            include: [
+                {
+                    model: Group,
+                    attributes: ['id', 'name', 'city', 'state']
+                },
+                {
+                    model: Venue,
+                    attributes: ['id', 'city', 'state']
+                }],
+            attributes:
+            {
+                exclude: ['createdAt', 'updatedAt']
+            }
+        })
+
+    const eventImages = await EventImage.findAll({
+        attributes: ['eventId', 'preview', 'url']
+    })
+
+    const attendances = await Attendance.findAll({
+        attributes: ['userId', 'eventId', 'status']
+    })
+
+    events.forEach(event => {
+        let previewImage = eventImages.find(image => (image.eventId === event.id && image.preview))
+
+        if (previewImage) event.dataValues.previewImage = previewImage.url
+        else event.dataValues.previewImage = "default event image url"
+
+
+        let numAttending = attendances.filter(attendee => attendee.eventId === event.id).length
+        event.dataValues.numAttending = numAttending
+    })
+
+    return res.json(events)
+})
+
+// GET DETAIL OF EVENT BY ID
+router.get('/:eventId', async (req, res) => {
+    const { eventId } = req.params
+
+    const event = await Event.findByPk(eventId, {
+        include: [
+            {
+                model: Group,
+                attributes: ['id', 'name', 'private', 'city', 'state']
+            },
+            {
+                model: Venue,
+                attributes: ['id', 'address', 'city', 'state', 'lat', 'lng']
+            },
+            {
+                model: EventImage,
+                attributes: ['id', 'url', 'preview']
+            }],
+        attributes:
+        {
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+
+    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
+    const attendances = await Attendance.findAll({
+        where: { eventId },
+        attributes: ['userId', 'eventId', 'status']
+    })
+
+    let numAttending = attendances.filter(attendee => attendee.eventId === event.id).length
+    event.dataValues.numAttending = numAttending
+
+    return res.json(event)
+})
+
+// ADD IMAGE TO EVENT BY ID (USER MUST BE AUTHORIZED)
+router.post('/:eventId/images', requireAuth, async (req, res) => {
+
+    const { eventId } = req.params
+    const { url, preview } = req.body
+
+    const event = await Event.findByPk(eventId)
+
+    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
+    const newImage = await EventImage.create({ url, preview })
+    const confirmedImage = {
+        id: newImage.id,
+        url: newImage.url,
+        preview: newImage.preview
+    }
+    return res.json(confirmedImage)
+})
+
+// EDIT EVENT BY ID (UPDATE AUTH)
+router.put('/:eventId', requireAuth, async (req, res) => {
+    const { eventId } = req.params
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+    const event = await Event.findByPk(eventId)
+
+    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
+    event.venueId = venueId,
+        event.name = name,
+        event.type = type,
+        event.capacity = capacity,
+        event.price = price,
+        event.description = description,
+        event.startDate = startDate,
+        event.endDate = endDate
+
+    await event.save()
+
+    delete event.dataValues.updatedAt
+    delete event.dataValues.createdAt
+
+    return res.json(event)
+})
+
+// DELETE EVENT BY ID (NEED AUTH)
+router.delete('/:eventId', requireAuth, async (req, res) => {
+    const { eventId } = req.params
+
+    const event = await Event.findByPk(eventId)
+
+    if (event) {
+        await event.destroy()
+        return res.json({ "message": "Successfully deleted" })
+    }
+    else return res.status(404).json({ message: "Event couldn't be found" })
+})
+
+module.exports = router;
