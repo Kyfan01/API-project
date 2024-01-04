@@ -176,7 +176,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
     } else return res.status(404).json({ message: "Group couldn't be found" })
 })
 
-// EDIT GROUP (check error-handling)
+// EDIT GROUP BY ID (check error-handling)
 router.put('/:groupId', requireAuth, async (req, res) => {
 
     const userId = req.user.id
@@ -360,5 +360,7 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
 
     return res.json(event)
 })
+
+
 
 module.exports = router;

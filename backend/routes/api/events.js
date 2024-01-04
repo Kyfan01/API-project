@@ -82,9 +82,64 @@ router.get('/:eventId', async (req, res) => {
     event.dataValues.numAttending = numAttending
 
     return res.json(event)
-
-
 })
 
+// ADD IMAGE TO EVENT BY ID (USER MUST BE AUTHORIZED)
+router.post('/:eventId/images', requireAuth, async (req, res) => {
+
+    const { eventId } = req.params
+    const { url, preview } = req.body
+
+    const event = await Event.findByPk(eventId)
+
+    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
+    const newImage = await EventImage.create({ url, preview })
+    const confirmedImage = {
+        id: newImage.id,
+        url: newImage.url,
+        preview: newImage.preview
+    }
+    return res.json(confirmedImage)
+})
+
+// EDIT EVENT BY ID (UPDATE AUTH)
+router.put('/:eventId', requireAuth, async (req, res) => {
+    const { eventId } = req.params
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+    const event = await Event.findByPk(eventId)
+
+    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
+    event.venueId = venueId,
+        event.name = name,
+        event.type = type,
+        event.capacity = capacity,
+        event.price = price,
+        event.description = description,
+        event.startDate = startDate,
+        event.endDate = endDate
+
+    await event.save()
+
+    delete event.dataValues.updatedAt
+    delete event.dataValues.createdAt
+
+    return res.json(event)
+})
+
+// DELETE EVENT BY ID (NEED AUTH)
+router.delete('/:eventId', requireAuth, async (req, res) => {
+    const { eventId } = req.params
+
+    const event = await Event.findByPk(eventId)
+
+    if (event) {
+        await event.destroy()
+        return res.json({ "message": "Successfully deleted" })
+    }
+    else return res.status(404).json({ message: "Event couldn't be found" })
+})
 
 module.exports = router;
