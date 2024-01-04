@@ -45,6 +45,16 @@ module.exports = {
         eventId: 5,
         userId: 8,
         status: 'enum here'
+      },
+      {
+        eventId: 3,
+        userId: 8,
+        status: 'enum here'
+      },
+      {
+        eventId: 4,
+        userId: 8,
+        status: 'enum here'
       }
     ])
   },

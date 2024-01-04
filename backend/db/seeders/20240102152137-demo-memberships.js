@@ -54,12 +54,12 @@ module.exports = {
       {
         userId: 8,
         groupId: 3,
-        status: 'enum here'
+        status: 'pending'
       },
       {
         userId: 8,
         groupId: 4,
-        status: 'enum here'
+        status: 'co-host'
       }
     ])
   },

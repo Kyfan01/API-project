@@ -61,6 +61,14 @@ module.exports = {
         state: 'Massachusetts',
         lat: 5,
         lng: 5
+      },
+      {
+        groupId: 5,
+        address: '6 Basketball Boulevard',
+        city: 'Boston',
+        state: 'Massachusetts',
+        lat: 5,
+        lng: 5
       }
     ])
   },
