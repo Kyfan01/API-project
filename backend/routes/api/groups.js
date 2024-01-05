@@ -3,6 +3,8 @@ const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendanc
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const membership = require('../../db/models/membership');
+const user = require('../../db/models/user');
 
 
 const router = express.Router();
@@ -361,6 +363,78 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
     return res.json(event)
 })
 
+// GET ALL MEMBERS OF GROUP BY ID (FIX LATER)
+router.get('/:groupId/members', async (req, res) => {
 
+    const { groupId } = req.params
+    const userId = req.user.id
+
+    const memberIds = await Membership.findAll({
+        where: { groupId }
+    })
+
+    // create an array with all users in group
+    const userIds = []
+
+    memberIds.forEach(member => {
+        userIds.push(member.userId)
+    })
+
+    const members = await User.findAll({
+        where: { id: userIds },
+        include: [{
+            model: Group,
+            through: {
+                model: Membership,
+                attributes: ['status']
+            }
+        }]
+    })
+
+    return res.json(members)
+
+})
+
+// REQUEST NEW MEMBERSHIP FOR GROUP BY ID
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+
+    const userId = req.user.id
+
+    const { groupId } = req.params
+
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+
+    const memberships = await Membership.findAll({
+        where: { groupId }
+    })
+
+    memberships.forEach(member => {
+        if (member.userId === userId && member.status === "pending") {
+            return res.status(400).json({ message: "Membership has already been requested" })
+        }
+        else if (member.userId === userId) {
+            return res.status(400).json({ message: "User is already a member of the group" })
+        }
+    })
+
+    const newMember = Membership.build({
+        userId, groupId, status: "pending"
+    })
+
+    newMember.save()
+
+    delete newMember.dataValues.updatedAt
+    delete newMember.dataValues.createdAt
+    delete newMember.dataValues.userId
+
+    return res.json(newMember)
+
+})
+
+// CHANGE STATUS OF MEMBER TO GROUP BY ID
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+
+})
 
 module.exports = router;
