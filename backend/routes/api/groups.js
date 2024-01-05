@@ -233,7 +233,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 
     if (group) {
         await group.destroy()
-        return res.json({ "message": "Successfully deleted" })
+        return res.json({ message: "Successfully deleted" })
     }
     else return res.status(404).json({ message: "Group couldn't be found" })
 })
@@ -369,29 +369,36 @@ router.get('/:groupId/members', async (req, res) => {
     const { groupId } = req.params
     const userId = req.user.id
 
-    const memberIds = await Membership.findAll({
-        where: { groupId }
-    })
+    // const memberIds = await Membership.findAll({
+    //     where: { groupId }
+    // })
 
-    // create an array with all users in group
-    const userIds = []
+    // // create an array with all users in group
+    // const userIds = []
 
-    memberIds.forEach(member => {
-        userIds.push(member.userId)
-    })
+    // memberIds.forEach(member => {
+    //     userIds.push(member.userId)
+    // })
 
     const members = await User.findAll({
-        where: { id: userIds },
+        //where: {id: userIds}
         include: [{
             model: Group,
             through: {
                 model: Membership,
                 attributes: ['status']
-            }
+            },
+            where: { id: groupId }
         }]
     })
 
-    return res.json(members)
+    members.forEach(member => {
+        member.dataValues.Membership = member.dataValues.Groups[0].Membership
+        delete member.dataValues.Groups
+        delete member.dataValues.username
+    })
+
+    return res.json({ Members: members })
 
 })
 
@@ -424,17 +431,70 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
 
     newMember.save()
 
-    delete newMember.dataValues.updatedAt
-    delete newMember.dataValues.createdAt
-    delete newMember.dataValues.userId
+    const newMemberRes = {
+        memberId: userId,
+        status: "pending"
+    }
 
-    return res.json(newMember)
+    return res.json(newMemberRes)
 
 })
 
-// CHANGE STATUS OF MEMBER TO GROUP BY ID
+// CHANGE STATUS OF MEMBER TO GROUP BY ID (CHANGE AUTHS)
 router.put('/:groupId/membership', requireAuth, async (req, res) => {
+    const { groupId } = req.params
+    const { memberId, status } = req.body
 
+    const member = await Membership.findOne({
+        where: { userId: memberId, groupId },
+        attributes: ['id', 'userId', 'groupId', 'status']
+    })
+
+    member.status = status
+    member.save()
+
+    delete member.dataValues.updatedAt
+    delete member.dataValues.createdAt
+
+    return res.json(member)
+
+})
+
+// DELETE MEMBERSHIP TO GROUP BY ID (NEED AUTH)
+router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) => {
+    const { groupId, memberId } = req.params
+    const userId = req.user.id
+
+
+    // const user = await User.findByPk(memberId, {
+    //     include: [{
+    //         model: Group,
+    //         through: {
+    //             model: Membership,
+    //             attributes: []
+    //         },
+    //         where: { id: groupId }
+    //     }]
+    // })
+
+    //if (!user.dataValues.Groups.length) return res.status(404).json({ message: "Group couldn't be found" })
+
+
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+
+    const user = await User.findByPk(memberId)
+    if (!user) return res.status(404).json({ message: "User couldn't be found" })
+
+    const membership = await Membership.findOne({
+        where: { userId: memberId, groupId }
+    })
+    if (!membership) {
+        return res.status(404).json({ message: "Membership between the user and the group does not exist" })
+    } else {
+        await membership.destroy()
+        return res.json({ message: "Successfully deleted membership from group" })
+    }
 })
 
 module.exports = router;
