@@ -49,7 +49,7 @@ module.exports = {
       {
         eventId: 3,
         userId: 8,
-        status: 'enum here'
+        status: 'pending'
       },
       {
         eventId: 4,

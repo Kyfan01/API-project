@@ -446,17 +446,16 @@ router.get('/:groupId/members', async (req, res) => {
             delete member.dataValues.Groups
             delete member.dataValues.username
         })
-        return res.json({ Members: members })
+
     } else {
         members.forEach(member => {
             member.dataValues.Membership = member.dataValues.Groups[0].Membership
             delete member.dataValues.Groups
             delete member.dataValues.username
         })
-        console.log(members)
         members = members.filter(member => { return member.dataValues.Membership.status !== "pending" })
-        return res.json({ Members: members })
     }
+    return res.json({ Members: members })
 
 })
 
