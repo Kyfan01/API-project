@@ -34,7 +34,7 @@ module.exports = {
       {
         userId: 6,
         groupId: 3,
-        status: 'enum here'
+        status: 'host'
       },
       {
         userId: 7,
@@ -44,12 +44,12 @@ module.exports = {
       {
         userId: 8,
         groupId: 5,
-        status: 'enum here'
+        status: 'host'
       },
       {
         userId: 7,
         groupId: 3,
-        status: 'enum here'
+        status: 'member'
       },
       {
         userId: 8,
