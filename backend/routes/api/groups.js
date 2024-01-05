@@ -3,8 +3,8 @@ const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendanc
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const membership = require('../../db/models/membership');
-const user = require('../../db/models/user');
+// const membership = require('../../db/models/membership');
+// const user = require('../../db/models/user');
 
 
 const router = express.Router();
