@@ -417,19 +417,18 @@ router.get('/:groupId/members', async (req, res) => {
 
     const { groupId } = req.params
     const userId = req.user.id
+    let organizer = false
 
-    // const memberIds = await Membership.findAll({
-    //     where: { groupId }
-    // })
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+    if (group.dataValues.organizerId === userId) organizer = true
 
-    // // create an array with all users in group
-    // const userIds = []
+    const member = await Membership.findOne({
+        where: { userId, groupId },
+    })
+    if (member.dataValues.status === "co-host") organizer = true
 
-    // memberIds.forEach(member => {
-    //     userIds.push(member.userId)
-    // })
-
-    const members = await User.findAll({
+    let members = await User.findAll({
         //where: {id: userIds}
         include: [{
             model: Group,
@@ -441,43 +440,23 @@ router.get('/:groupId/members', async (req, res) => {
         }]
     })
 
-    // check permissions of user
-    // const group = await Group.findByPk(groupId,
-    //     {
-    //         include: [{
-    //             model: User,
-    //             as: 'Organizer',
-    //             through: {
-    //                 model: Membership,
-    //                 attributes: ['id', 'status']
-    //             },
-    //             where: { id: userId }
-    //         }]
-    //     })
-    // if (!group) {
-    //     console.log(members)
-    //     members.forEach(member => {
-    //         member.dataValues.Membership = member.dataValues.Groups[0].Membership
-    //         delete member.dataValues.Groups
-    //         delete member.dataValues.username
-    //         if (member.dataValues.Membership.status === "pending") member = null
-    //     })
-    // } else {
-
-    // }
-
-    // if (group.dataValues.organizerId !== userId && group.dataValues.Organizer[0].Membership.status !== 'co-host') {
-    //     return res.status(400).json({ message: "You are not an organizer or co-host" })
-    // }
-
-
-    members.forEach(member => {
-        member.dataValues.Membership = member.dataValues.Groups[0].Membership
-        delete member.dataValues.Groups
-        delete member.dataValues.username
-    })
-
-    return res.json({ Members: members })
+    if (organizer) {
+        members.forEach(member => {
+            member.dataValues.Membership = member.dataValues.Groups[0].Membership
+            delete member.dataValues.Groups
+            delete member.dataValues.username
+        })
+        return res.json({ Members: members })
+    } else {
+        members.forEach(member => {
+            member.dataValues.Membership = member.dataValues.Groups[0].Membership
+            delete member.dataValues.Groups
+            delete member.dataValues.username
+        })
+        console.log(members)
+        members = members.filter(member => { return member.dataValues.Membership.status !== "pending" })
+        return res.json({ Members: members })
+    }
 
 })
 
@@ -516,13 +495,45 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     }
 
     return res.json(newMemberRes)
-
 })
 
-// CHANGE STATUS OF MEMBER TO GROUP BY ID (CHANGE AUTHS)
+// CHANGE STATUS OF MEMBER TO GROUP BY ID (MIGHT NEED TO CHANGE WHAT MEMBER MEANS)
 router.put('/:groupId/membership', requireAuth, async (req, res) => {
     const { groupId } = req.params
     const { memberId, status } = req.body
+    const userId = req.user.id
+    let userPerm = ""
+    let permArr = ['organizer', 'co-host']
+
+    if (status === "pending") res.json({
+        message: "Bad Request",
+        errors: { status: "cannot change a membership status to pending" }
+    })
+
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+
+
+    const user = await User.findByPk(memberId)
+    if (!user) return res.status(404).json({ message: "User couldn't be found" })
+
+    const membership = await Membership.findOne({
+        where: { userId: memberId, groupId }
+    })
+    if (!membership) {
+        return res.status(404).json({ message: "Membership between the user and the group does not exist" })
+    }
+
+    if (group.dataValues.organizerId === userId) userPerm = "organizer"
+    else if (membership.dataValues.status === "co-host") userPerm = "co-host"
+
+    if (status === "co-host" && userPerm !== "organizer") {
+        return res.status(400).json({ message: "You do not have permission to change to co-host" })
+    }
+
+    if (status === "member" && !permArr.includes(userPerm)) {
+        return res.status(400).json({ message: "You do not have permission to change to member" })
+    }
 
     const member = await Membership.findOne({
         where: { userId: memberId, groupId },
@@ -539,28 +550,16 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 
 })
 
-// DELETE MEMBERSHIP TO GROUP BY ID (NEED AUTH)
+// DELETE MEMBERSHIP TO GROUP BY ID (MIGHT NEED TO CHANGE WHAT MEMBER MEANS)
 router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) => {
     const { groupId, memberId } = req.params
     const userId = req.user.id
-
-
-    // const user = await User.findByPk(memberId, {
-    //     include: [{
-    //         model: Group,
-    //         through: {
-    //             model: Membership,
-    //             attributes: []
-    //         },
-    //         where: { id: groupId }
-    //     }]
-    // })
-
-    //if (!user.dataValues.Groups.length) return res.status(404).json({ message: "Group couldn't be found" })
+    let userPerm = false
 
 
     const group = await Group.findByPk(groupId)
     if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+    if (group.dataValues.organizerId === userId) userPerm = true
 
     const user = await User.findByPk(memberId)
     if (!user) return res.status(404).json({ message: "User couldn't be found" })
@@ -568,12 +567,15 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) =>
     const membership = await Membership.findOne({
         where: { userId: memberId, groupId }
     })
-    if (!membership) {
-        return res.status(404).json({ message: "Membership between the user and the group does not exist" })
-    } else {
+    if (!membership) return res.status(404).json({ message: "Membership between the user and the group does not exist" })
+
+    if (userId === memberId) userPerm = true
+
+    if (userPerm) {
         await membership.destroy()
         return res.json({ message: "Successfully deleted membership from group" })
     }
+
 })
 
 module.exports = router;
