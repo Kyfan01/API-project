@@ -20,6 +20,57 @@ const handleValidationErrors = (req, _res, next) => {
     next();
 };
 
+const validateGroup = body => {
+    const { name, about, type, private, city, state } = body
+    const errObj = {}
+    const typeArr = ['Online', 'In person']
+
+    if (name && name.length > 60) errObj.name = "Name must be 60 characters or less"
+    if (about && about.length < 50) errObj.about = "About must be 50 characters or more"
+    if (type && !typeArr.includes(type)) errObj.type = "Type must be 'Online' or 'In person'"
+    if (private && typeof private !== 'boolean') errObj.private = "Private must be a boolean"
+    if (!city) errObj.city = "City is required"
+    if (!state) errObj.state = "State is required"
+
+    return errObj
+}
+
+const validateVenue = body => {
+    const { address, city, state, lat, lng } = body
+    const errObj = {}
+
+    if (!address) errObj.address = "Street address is required"
+    if (!city) errObj.city = "City is required"
+    if (!state) errObj.state = "State is required"
+    if (lat && lat < -90 || lat > 90) errObj.lat = "Latitude must be within -90 and 90"
+    if (lng && lng < -180 || lng > 180) errObj.lng = "Longitude must be within -180 and 180"
+
+    return errObj
+}
+
+const validateEvent = body => {
+    const { name, type, capacity, price, description, startDate, endDate } = body
+    const errObj = {}
+    const typeArr = ['Online', 'In person']
+    const currentTime = new Date().getTime()
+
+    const startTime = new Date(startDate).getTime()
+    const endTime = new Date(endDate).getTime()
+
+    if (name && name.length < 4) errObj.name = "Name must be at least 5 characters"
+    if (type && !typeArr.includes(type)) errObj.type = "Type must be 'Online' or 'In person'"
+    if (capacity && typeof capacity !== 'number' || capacity < 1) errObj.capacity = "Capacty must be an integer greater than 0"
+    if (price && typeof price !== 'number' || price < 0) errObj.price = "Price is invalid"
+    if (!description) errObj.description = "Description is required"
+    if (startDate && startTime < currentTime) errObj.startDate = "Start date must be in the future"
+    if (endDate && endTime < startTime) errObj.endDate = "End date is less than start date"
+
+    return errObj
+}
+
 module.exports = {
-    handleValidationErrors
+    handleValidationErrors,
+    validateGroup,
+    validateVenue,
+    validateEvent
 };
