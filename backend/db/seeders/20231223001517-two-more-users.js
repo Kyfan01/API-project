@@ -57,6 +57,27 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('basketball'),
         firstName: 'Kevin',
         lastName: 'Fan'
+      },
+      {
+        email: 'geekfreak2@user.io',
+        username: 'Kevin2 Fantetokounmpo',
+        hashedPassword: bcrypt.hashSync('basketball'),
+        firstName: 'Kevin',
+        lastName: 'Fan'
+      },
+      {
+        email: 'geek3freak@user.io',
+        username: 'Kevin3 Fantetokounmpo',
+        hashedPassword: bcrypt.hashSync('basketball'),
+        firstName: 'Kevin',
+        lastName: 'Fan'
+      },
+      {
+        email: 'geek4freak@user.io',
+        username: 'Kevin5 Fantetokounmpo',
+        hashedPassword: bcrypt.hashSync('basketball'),
+        firstName: 'Kevin',
+        lastName: 'Fan'
       }
     ], { validate: true });
 

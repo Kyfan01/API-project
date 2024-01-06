@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**
-     * Add seed commands here.
+     * Add seed commattending.
      *
      * Example:
      * await queryInterface.bulkInsert('People', [{
@@ -24,22 +24,22 @@ module.exports = {
       {
         eventId: 1,
         userId: 4,
-        status: 'enum here'
+        status: 'attending'
       },
       {
         eventId: 2,
         userId: 5,
-        status: 'enum here'
+        status: 'attending'
       },
       {
         eventId: 3,
         userId: 6,
-        status: 'enum here'
+        status: 'attending'
       },
       {
         eventId: 4,
         userId: 7,
-        status: 'enum here'
+        status: 'attending'
       },
       {
         eventId: 5,
@@ -54,14 +54,14 @@ module.exports = {
       {
         eventId: 4,
         userId: 8,
-        status: 'enum here'
+        status: 'attending'
       }
     ])
   },
 
   async down(queryInterface, Sequelize) {
     /**
-     * Add commands to revert seed here.
+     * Add commands to revert attending.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});

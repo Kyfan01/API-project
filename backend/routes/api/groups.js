@@ -204,7 +204,7 @@ router.put('/:groupId', requireAuth, async (req, res) => {
     //check if user is a member of the group
     let isMember = memberList.includes(userId)
 
-    if (!isMember) return res.json({ message: "Bad Request" })
+    if (!isMember) return res.json({ message: "User is not a member of the group" })
 
     else if (isMember) {
         group.name = name,
@@ -574,6 +574,8 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) =>
     if (userPerm) {
         await membership.destroy()
         return res.json({ message: "Successfully deleted membership from group" })
+    } else {
+        return res.json({ message: "You do not have permission to delete this membership" })
     }
 
 })
