@@ -68,9 +68,27 @@ const validateEvent = body => {
     return errObj
 }
 
+const validateQuery = query => {
+    const { page, size, name, type, startDate } = query
+    const errObj = {}
+    const typeArr = ['Online', 'In person']
+    const currentTime = new Date().getTime()
+
+    const startTime = new Date(startDate).getTime()
+
+    if (page && page < 1) errObj.page = "Page must be greater than or equal to 1"
+    if (size && size < 1) errObj.size = "Size must be greater than or equal to 1"
+    if (name && typeof name !== 'string') errObj.name = "Name must be a string"
+    if (type && !typeArr.includes(type)) errObj.type = "Type must be 'Online' or 'In person'"
+    if (startDate && startTime < currentTime) errObj.startDate = "Start date must be in the future"
+
+    return errObj
+}
+
 module.exports = {
     handleValidationErrors,
     validateGroup,
     validateVenue,
-    validateEvent
+    validateEvent,
+    validateQuery
 };

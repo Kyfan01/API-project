@@ -2,14 +2,40 @@ const express = require('express')
 const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth')
 const { check } = require('express-validator');
-const { handleValidationErrors, validateEvent } = require('../../utils/validation');
+const { handleValidationErrors, validateEvent, validateQuery } = require('../../utils/validation');
 
 const router = express.Router();
 
 // GET ALL EVENTS (REFACTOR LATER)
 router.get('/', async (req, res) => {
+
+    const newQueryErr = validateQuery(req.body)
+
+    if (Object.keys(newQueryErr).length) {
+        const err = new Error()
+        err.message = "Bad Request"
+        err.errors = newQueryErr
+        return res.status(400).json(err)
+    }
+
+    let { page, size, name, type, startDate } = req.query
+    page = parseInt(page)
+    size = parseInt(size)
+
+    if (Number.isNaN(page) || page > 10) page = 1
+    if (Number.isNaN(size) || size > 20) size = 20
+
+    const searchObj = {}
+    if (name) searchObj.name = { [Op.substring]: name }
+    if (type) searchObj.type = { [Op.in]: ['Online', 'In Person'] }
+    if (startDate) searchObj.startDate = { startDate }
+
+
     const events = await Event.findAll(
         {
+            where: searchObj,
+            limit: size,
+            offset: size * (page - 1),
             include: [
                 {
                     model: Group,
@@ -399,6 +425,5 @@ router.delete('/:eventId/attendance/:userId', requireAuth, async (req, res) => {
     }
 })
 
-//QUERY FILTERS
 
 module.exports = router;
