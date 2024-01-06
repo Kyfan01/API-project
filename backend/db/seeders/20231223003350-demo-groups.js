@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**
-     * Add seed commands here.
+     * Add seed commOnline.
      *
      * Example:
      * await queryInterface.bulkInsert('People', [{
@@ -26,7 +26,7 @@ module.exports = {
         organizerId: 4,
         name: 'Leaguers',
         about: 'This is a league team',
-        type: 'enum here',
+        type: 'Online',
         private: true,
         city: 'Brunswick',
         state: 'New Jersey'
@@ -35,7 +35,7 @@ module.exports = {
         organizerId: 5,
         name: 'PokemonGo',
         about: 'This is a pokemonGo social group',
-        type: 'enum here',
+        type: 'Online',
         private: false,
         city: 'Niantic',
         state: 'California'
@@ -44,7 +44,7 @@ module.exports = {
         organizerId: 6,
         name: 'Museum Visitors',
         about: 'We visit museums together',
-        type: 'enum here',
+        type: 'Online',
         private: true,
         city: 'Los Angeles',
         state: 'California'
@@ -53,7 +53,7 @@ module.exports = {
         organizerId: 7,
         name: 'Dining Club',
         about: 'This is a social dining club',
-        type: 'enum here',
+        type: 'Online',
         private: true,
         city: 'Cambridge',
         state: 'Massachusetts'
@@ -62,7 +62,7 @@ module.exports = {
         organizerId: 8,
         name: 'Boston Ballers',
         about: 'This is a basketball team',
-        type: 'enum here',
+        type: 'Online',
         private: true,
         city: 'Boston',
         state: 'Massachusetts'
@@ -72,7 +72,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     /**
-     * Add commands to revert seed here.
+     * Add commands to revert Online.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
