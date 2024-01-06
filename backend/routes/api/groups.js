@@ -426,6 +426,7 @@ router.get('/:groupId/members', async (req, res) => {
     const member = await Membership.findOne({
         where: { userId, groupId },
     })
+    if (!member) return res.status(404).json({ message: "Membership couldn't be found" })
     if (member.dataValues.status === "co-host") organizer = true
 
     let members = await User.findAll({
