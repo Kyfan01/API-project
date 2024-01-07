@@ -41,14 +41,14 @@ router.get('/current', requireAuth, async (req, res) => {
     // find all groupIds that the user is a member of
     const userMemberships = await Membership.findAll({
         where: { userId },
-        attributes: ['groupId']
+        //attributes: ['groupId']
     })
 
     // create an array with all the groupIds
     const joinedGroupArr = []
 
     userMemberships.forEach(group => {
-        joinedGroupArr.push(group.groupId)
+        joinedGroupArr.push(group.dataValues.groupId)
     })
 
     // get all group objects that the user is a member of
