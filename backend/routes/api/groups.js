@@ -10,81 +10,73 @@ const router = express.Router();
 
 // GET ALL GROUPS (come back and fix includes)
 router.get('/', async (req, res) => {
-    const groups = await Group.findAll()
+    const groups = await Group.findAll({
+        include: {
+            model: GroupImage,
+            attributes: ['id', 'url', 'preview']
+        }
+    })
 
     const members = await Membership.findAll()
 
-    const groupImages = await GroupImage.findAll()
+    let groupArr = []
+    groups.forEach(group => { groupArr.push(group.toJSON()) })
 
-    groups.forEach(group => {
+    groupArr.forEach(group => {
         let numMembers = members.filter(member => member.groupId === group.id).length
-        group.dataValues.numMembers = numMembers
+        group.numMembers = numMembers
 
-        // search all group images for a matching image that is the preview image
-        let previewImage = groupImages.find(image => (image.groupId === group.id && image.preview))
+        let previewImage = group.GroupImages.filter(image => { return image.preview === true })
+        if (!previewImage.length) group.previewImage = 'default preview image url'
+        else group.previewImage = previewImage[0].url
 
-        // if the preview image exists, set the url. Otherwise use a default
-        if (previewImage) group.dataValues.previewImage = previewImage.url
-        else group.dataValues.previewImage = 'default preview image url'
+        delete group.GroupImages
     })
 
     return res.json({
-        Groups: groups
+        Groups: groupArr
     })
 })
 
-// GET ALL GROUPS JOINED BY CURRENT USER (REFACTOR LATER)
+// GET ALL GROUPS JOINED BY CURRENT USER
 router.get('/current', requireAuth, async (req, res) => {
-
     const userId = req.user.id
 
-    // find all groupIds that the user is a member of
-    const userMemberships = await Membership.findAll({
-        where: { userId },
-        //attributes: ['groupId']
+    const members = await Membership.findAll()
+
+    const groups = await Group.findAll({
+        include: [{
+            model: User,
+            as: 'Organizer',
+            through: {
+                model: Membership,
+                attributes: []
+            },
+            attributes: [],
+            where: { id: userId }
+        },
+        {
+            model: GroupImage,
+            attributes: ['id', 'url', 'preview']
+        }]
     })
 
-    // create an array with all the groupIds
-    const joinedGroupArr = []
+    let groupArr = []
+    groups.forEach(group => { groupArr.push(group.toJSON()) })
 
-    userMemberships.forEach(group => {
-        joinedGroupArr.push(group.dataValues.groupId)
+    groupArr.forEach(group => {
+        // find the number of members for each group by searching array of all members
+        let numMembers = members.filter(member => member.groupId === group.id).length
+        group.numMembers = numMembers
+
+        // find and set preview image if it exists for each group, set default if it does not exist
+        let previewImage = group.GroupImages.filter(image => { return image.preview === true })
+        if (!previewImage.length) group.previewImage = 'default preview image url'
+        else group.previewImage = previewImage[0].url
+
+        delete group.GroupImages
     })
-
-    // get all group objects that the user is a member of
-    const joinedGroups = await Group.findAll({
-        where: { Id: joinedGroupArr }
-    })
-
-    const groupImages = await GroupImage.findAll({
-        where: { groupId: joinedGroupArr },
-        attributes: ['groupId', 'url', 'preview']
-    })
-
-    // find all members of all groups the user is in
-    const members = await Membership.findAll({
-        where: { groupId: joinedGroupArr },
-        attributes: ['userId', 'groupId']
-    })
-
-
-    // for each group, find all members that belong to that group and count them
-    joinedGroups.forEach(group => {
-        let numMembers = members.filter((member) => member.groupId === group.id).length
-        group.dataValues.numMembers = numMembers
-
-        // search all group images for a matching image that is the preview image
-        let previewImage = groupImages.find((image) => (image.groupId === group.id && image.preview))
-
-        // if the preview image exists, set the url. Otherwise use a default
-        if (previewImage) {
-            group.dataValues.previewImage = previewImage.url
-        } else group.dataValues.previewImage = 'default preview image url'
-    })
-
-    return res.json({
-        Groups: joinedGroups
-    })
+    return res.json({ Groups: groupArr })
 })
 
 // GET DETAILS OF GROUP BY ID
