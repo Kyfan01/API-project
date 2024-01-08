@@ -17,16 +17,25 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Users' },
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
         onDelete: 'CASCADE'
       },
       groupId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Groups' },
+        allowNull: false,
+        references: {
+          model: 'Groups',
+          key: 'id'
+        },
         onDelete: 'CASCADE'
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

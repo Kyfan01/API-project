@@ -1,6 +1,6 @@
 const express = require('express')
 const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
-const { requireAuth } = require('../../utils/auth')
+const { requireAuth, isCoHost, restoreUser } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors, validateEvent, validateQuery } = require('../../utils/validation');
 
@@ -26,10 +26,9 @@ router.get('/', async (req, res) => {
     if (Number.isNaN(size) || size > 20) size = 20
 
     const searchObj = {}
-    if (name) searchObj.name = { [Op.substring]: name }
-    if (type) searchObj.type = { [Op.in]: ['Online', 'In Person'] }
-    if (startDate) searchObj.startDate = { startDate }
-
+    if (name) searchObj.where.name = { [Op.substring]: name }
+    if (type) searchObj.where.type = { [Op.in]: ['Online', 'In Person'] }
+    if (startDate) searchObj.where.startDate = startDate
 
     const events = await Event.findAll(
         {
@@ -44,40 +43,44 @@ router.get('/', async (req, res) => {
                 {
                     model: Venue,
                     attributes: ['id', 'city', 'state']
+                },
+                {
+                    model: User,
+                    through: {
+                        attributes: []
+                    }
+                },
+                {
+                    model: EventImage,
+                    attributes: ['id', 'url', 'preview']
                 }],
             attributes:
             {
-                exclude: ['createdAt', 'updatedAt']
+                exclude: ['createdAt', 'updatedAt', 'description', 'capacity', 'price']
             }
         })
 
-    const eventImages = await EventImage.findAll({
-        attributes: ['eventId', 'preview', 'url']
+    let eventArr = []
+    events.forEach(async event => { eventArr.push(event.toJSON()) })
+
+    eventArr.forEach(event => {
+        event.numAttending = event.Users.length
+        delete event.Users
+
+        let previewImage = event.EventImages.filter(image => { return image.preview === true })
+        if (!previewImage.length) event.previewImage = 'default preview image url'
+        else event.previewImage = previewImage[0].url
+
+        delete event.EventImages
     })
-
-    const attendances = await Attendance.findAll({
-        attributes: ['userId', 'eventId', 'status']
-    })
-
-    events.forEach(event => {
-        let previewImage = eventImages.find(image => (image.eventId === event.id && image.preview))
-
-        if (previewImage) event.dataValues.previewImage = previewImage.url
-        else event.dataValues.previewImage = "default event image url"
-
-
-        let numAttending = attendances.filter(attendee => attendee.eventId === event.id).length
-        event.dataValues.numAttending = numAttending
-    })
-
-    return res.json({ Events: events })
+    return res.json({ Events: eventArr })
 })
 
 // GET DETAIL OF EVENT BY ID
 router.get('/:eventId', async (req, res) => {
     const { eventId } = req.params
 
-    const event = await Event.findByPk(eventId, {
+    let event = await Event.findByPk(eventId, {
         include: [
             {
                 model: Group,
@@ -90,6 +93,10 @@ router.get('/:eventId', async (req, res) => {
             {
                 model: EventImage,
                 attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: User,
+                attributes: ['id']
             }],
         attributes:
         {
@@ -97,17 +104,11 @@ router.get('/:eventId', async (req, res) => {
         }
     })
 
-    console.log(event)
-
     if (!event) return res.status(404).json({ message: "Event couldn't be found" })
 
-    const attendances = await Attendance.findAll({
-        where: { eventId },
-        attributes: ['userId', 'eventId', 'status']
-    })
-
-    let numAttending = attendances.filter(attendee => attendee.eventId === event.id).length
-    event.dataValues.numAttending = numAttending
+    event = event.toJSON()
+    event.numAttending = event.Users.length
+    delete event.Users
 
     return res.json(event)
 })
@@ -172,7 +173,6 @@ router.put('/:eventId', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']
@@ -185,24 +185,6 @@ router.put('/:eventId', requireAuth, async (req, res) => {
     if (group.dataValues.organizerId !== userId && group.dataValues.Organizer[0].Membership.status !== 'co-host') {
         return res.status(400).json({ message: "You are not an organizer or co-host" })
     }
-
-    // const event = await Event.findByPk(eventId,
-    //     {
-    //         include: [{
-    //             model: User,
-    //             through: {
-    //                 model: Attendance,
-    //                 attributes: ['id', 'status']
-    //             },
-    //             where: { id: userId }
-    //         }]
-    //     })
-    // if (!event) return res.status(400).json({ message: "You are not an organizer or member" })
-
-    // console.log(event)
-    // // if (event.dataValues.userId !== userId && event.dataValues.Users[0].Attendance.status !== 'co-host') {
-    // //     return res.status(400).json({ message: "You are not an organizer or co-host" })
-    // // }
 
     event.venueId = venueId,
         event.name = name,
@@ -235,7 +217,6 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']
@@ -362,7 +343,6 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']

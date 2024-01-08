@@ -14,13 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
-      //Group.belongsTo(models.User, { foreignKey: 'organizerId' })
-
       Group.belongsToMany(models.User, {
-        through: 'Membership',
+        through: models.Membership,
         foreignKey: 'groupId',
-        otherKey: 'userId',
-        as: 'Organizer'
+        otherKey: 'userId'
+      })
+
+      Group.belongsTo(models.User, {
+        foreignKey: 'organizerId'
       })
 
       Group.hasMany(models.Venue, {
@@ -35,12 +36,30 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true
       })
 
-      Group.hasMany(models.Membership, {
-        foreignKey: 'groupId'
+      Group.hasMany(models.Event, {
+        foreignKey: 'groupId',
+        onDelete: 'CASCADE',
+        hooks: true
       })
+
+      // Group.belongsToMany(models.Venue, {
+      //   through: models.Event,
+      //   foreignKey: 'groupId',
+      //   otherKey: 'venueId'
+      // })
+
+      // Group.hasMany(models.Membership, {
+      //   foreignKey: 'groupId'
+      // })
     }
   }
   Group.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     organizerId: DataTypes.INTEGER,
     name: {
       type: DataTypes.STRING,
