@@ -69,6 +69,8 @@ const validateEvent = body => {
 }
 
 const validateQuery = query => {
+
+    console.log(query)
     const { page, size, name, type, startDate } = query
     const errObj = {}
     const typeArr = ['Online', 'In person']
@@ -76,8 +78,10 @@ const validateQuery = query => {
 
     const startTime = new Date(startDate).getTime()
 
-    if (page && page < 1) errObj.page = "Page must be greater than or equal to 1"
-    if (size && size < 1) errObj.size = "Size must be greater than or equal to 1"
+    //console.log(page)
+
+    if (page != null && page < 1) errObj.page = "Page must be greater than or equal to 1"
+    if (size != null && size < 1) errObj.size = "Size must be greater than or equal to 1"
     if (name && typeof name !== 'string') errObj.name = "Name must be a string"
     if (type && !typeArr.includes(type)) errObj.type = "Type must be 'Online' or 'In person'"
     if (startDate && startTime < currentTime) errObj.startDate = "Start date must be in the future"

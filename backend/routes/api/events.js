@@ -7,10 +7,10 @@ const { Op } = require('sequelize');
 
 const router = express.Router();
 
-// GET ALL EVENTS (REFACTOR LATER)
+// GET ALL EVENTS
 router.get('/', async (req, res) => {
 
-    const newQueryErr = validateQuery(req.body)
+    const newQueryErr = validateQuery(req.query)
 
     if (Object.keys(newQueryErr).length) {
         const err = new Error()
@@ -20,11 +20,18 @@ router.get('/', async (req, res) => {
     }
 
     let { page, size, name, type, startDate } = req.query
+
+    if (!size) size = 1
+    if (!page) page = 20
+
     page = parseInt(page)
     size = parseInt(size)
 
-    if (Number.isNaN(page) || page > 10) page = 1
-    if (Number.isNaN(size) || size > 20) size = 20
+    if (page > 10) page = 1
+    if (size > 20) size = 20
+
+    console.log(page)
+    console.log(size)
 
     const searchObj = {}
     if (name) searchObj.name = { [Op.substring]: name }

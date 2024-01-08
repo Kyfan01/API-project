@@ -42,17 +42,40 @@ router.get('/', async (req, res) => {
 router.get('/current', [restoreUser, requireAuth], async (req, res) => {
     const userId = req.user.id
 
+    // find all organized groups
+    const orgGroups = await Group.findAll({
+        where: { organizerId: userId }
+    })
 
+    // find all member groups
+    const memberGroups = await Membership.findAll({
+        where: {
+            userId
+        }
+    })
+
+    // find subset of unique groups
+    const allGroupsArr = []
+    orgGroups.forEach(group => {
+        group = group.toJSON()
+        let groupId = group.id
+        if (!allGroupsArr.includes(groupId)) allGroupsArr.push(groupId)
+    })
+
+    memberGroups.forEach(group => {
+        group = group.toJSON()
+        let groupId = group.groupId
+        if (!allGroupsArr.includes(groupId)) allGroupsArr.push(groupId)
+    })
 
     //find all groups joined by user
     const groups = await Group.findAll({
+        where: { id: allGroupsArr },
         include: [{
             model: User,
-            where: { id: userId },
             through: {
-                model: Membership
+                model: Membership,
             },
-            attributes: [],
         },
         {
             model: GroupImage,
@@ -62,6 +85,8 @@ router.get('/current', [restoreUser, requireAuth], async (req, res) => {
 
     let groupArr = []
     groups.forEach(group => groupArr.push(group.toJSON()))
+
+    console.log(groupArr)
 
     const members = await Membership.findAll()
 
