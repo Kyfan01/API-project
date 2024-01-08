@@ -156,7 +156,7 @@ router.post('/:groupId/images', [restoreUser, requireAuth], async (req, res) => 
         }
 
         return res.json(confirmedImage)
-    } else return res.status(404).json({ message: "You are not the organizer for this group" })
+    } else return res.status(403).json({ message: "You are not the organizer for this group" })
 })
 
 // EDIT GROUP BY ID (REFACTOR LATER)
@@ -426,7 +426,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     const { memberId, status } = req.body
     const userId = req.user.id
 
-    if (status === "pending") res.json({
+    if (status === "pending") res.status(400).json({
         message: "Bad Request",
         errors: { status: "cannot change a membership status to pending" }
     })
