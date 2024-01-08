@@ -36,11 +36,17 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true
       })
 
-      Group.belongsToMany(models.Venue, {
-        through: models.Event,
+      Group.hasMany(models.Event, {
         foreignKey: 'groupId',
-        otherKey: 'venueId'
+        onDelete: 'CASCADE',
+        hooks: true
       })
+
+      // Group.belongsToMany(models.Venue, {
+      //   through: models.Event,
+      //   foreignKey: 'groupId',
+      //   otherKey: 'venueId'
+      // })
 
       // Group.hasMany(models.Membership, {
       //   foreignKey: 'groupId'
@@ -48,6 +54,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Group.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     organizerId: DataTypes.INTEGER,
     name: {
       type: DataTypes.STRING,

@@ -1,8 +1,9 @@
 const express = require('express')
 const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
-const { requireAuth, restoreUser } = require('../../utils/auth')
+const { requireAuth, restoreUser, isCoHost } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors, validateGroup, validateVenue, validateEvent } = require('../../utils/validation');
+const { or } = require('sequelize');
 // const membership = require('../../db/models/membership');
 // const user = require('../../db/models/user');
 
@@ -11,20 +12,25 @@ const router = express.Router();
 // GET ALL GROUPS (come back and fix includes)
 router.get('/', async (req, res) => {
     const groups = await Group.findAll({
-        include: {
+        include: [{
             model: GroupImage,
             attributes: ['id', 'url', 'preview']
-        }
+        },
+        {
+            model: User,
+            attributes: ['id']
+        }]
     })
 
-    const members = await Membership.findAll()
+
 
     let groupArr = []
-    groups.forEach(group => { groupArr.push(group.toJSON()) })
+    groups.forEach(async group => { groupArr.push(group.toJSON()) })
 
     groupArr.forEach(group => {
-        let numMembers = members.filter(member => member.groupId === group.id).length
-        group.numMembers = numMembers
+
+        group.numMembers = group.Users.length
+        delete group.Users
 
         let previewImage = group.GroupImages.filter(image => { return image.preview === true })
         if (!previewImage.length) group.previewImage = 'default preview image url'
@@ -33,9 +39,7 @@ router.get('/', async (req, res) => {
         delete group.GroupImages
     })
 
-    return res.json({
-        Groups: groupArr
-    })
+    return res.json({ Groups: groupArr })
 })
 
 // GET ALL GROUPS JOINED BY CURRENT USER
@@ -44,15 +48,15 @@ router.get('/current', [restoreUser, requireAuth], async (req, res) => {
 
     const members = await Membership.findAll()
 
+    //find all groups joined by user
     const groups = await Group.findAll({
         include: [{
             model: User,
             through: {
                 model: Membership,
-                attributes: []
+                where: { id: userId }
             },
             attributes: [],
-            where: { id: userId }
         },
         {
             model: GroupImage,
@@ -99,28 +103,24 @@ router.get('/:groupId', async (req, res) => {
 
     if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
+    // let groupMemberArr = await group.getUsers()
+    // let numMembers = groupMemberArr.length
+
+    let organizer = await group.getUser()
+
     group = group.toJSON()
 
-    // let organizer = await group.getUser()
-
-    // group.Organizer
-
-    const members = await Membership.findAll({
-        where: { groupId: group.id },
-        attributes: ['userId', 'groupId']
-    })
-
-    let numMembers = members.filter(member => member.groupId === group.id).length
-    group.numMembers = numMembers
+    group.numMembers = group.Users.length
+    group.Organizer = organizer
 
     delete group.Users
-    // delete group.Organizer.Membership
 
     return res.json(group)
 })
 
 // CREATE NEW GROUP
 router.post('/', [restoreUser, requireAuth], async (req, res) => {
+    const userId = req.user.id
 
     const newGroupErr = validateGroup(req.body)
 
@@ -132,8 +132,7 @@ router.post('/', [restoreUser, requireAuth], async (req, res) => {
     }
 
     const { name, about, type, private, city, state } = req.body
-    const group = await Group.create({ organizerId: req.user.id, name, about, type, private, city, state })
-    group.save()
+    const group = await Group.create({ organizerId: userId, name, about, type, private, city, state })
 
     return res.status(201).json(group)
 })
@@ -151,7 +150,6 @@ router.post('/:groupId/images', [restoreUser, requireAuth], async (req, res) => 
     else if (group.organizerId === userId) {
 
         const newImage = await GroupImage.create({ groupId: parseInt(groupId), url, preview })
-        newImage.save()
 
         const confirmedImage = {
             id: newImage.id,
@@ -164,7 +162,7 @@ router.post('/:groupId/images', [restoreUser, requireAuth], async (req, res) => 
 })
 
 // EDIT GROUP BY ID (REFACTOR LATER)
-router.put('/:groupId', requireAuth, async (req, res) => {
+router.put('/:groupId', [restoreUser, requireAuth], async (req, res) => {
 
     const newGroupErr = validateGroup(req.body)
 
@@ -179,59 +177,41 @@ router.put('/:groupId', requireAuth, async (req, res) => {
     const { groupId } = req.params
     const { name, about, type, private, city, state } = req.body
 
-    // find specific group
     const group = await Group.findByPk(groupId)
     if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
-    // find all members of that group
-    const members = await Membership.findAll({
-        where: { groupId },
-        attributes: ['userId']
-    })
+    if (group.organizerId !== userId) return res.status(403).json({ message: "You are not the organizer of this group" })
 
-    // create array of members' userIds
-    let memberList = []
-    for (let member of members) {
-        memberList.push(member.userId)
-    }
+    group.name = name,
+        group.about = about,
+        group.type = type,
+        group.private = private,
+        group.city = city,
+        group.state = state
 
-    //check if user is a member of the group
-    let isMember = memberList.includes(userId)
-
-    if (!isMember) return res.json({ message: "User is not a member of the group" })
-
-    else if (isMember) {
-        group.name = name,
-            group.about = about,
-            group.type = type,
-            group.private = private,
-            group.city = city,
-            group.state = state
-
-        await group.save()
-    }
+    group.save()
 
     return res.json(group)
 })
 
 // DELETE GROUP (check what proper auth means)
-router.delete('/:groupId', requireAuth, async (req, res) => {
+router.delete('/:groupId', [restoreUser, requireAuth], async (req, res) => {
 
     const userId = req.user.id
     const { groupId } = req.params
 
     const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+    if (group.organizerId !== userId) return res.status(403).json({ message: "You are not the organizer of this group" })
 
-    if (group) {
-        await group.destroy()
-        return res.json({ message: "Successfully deleted" })
-    }
-    else return res.status(404).json({ message: "Group couldn't be found" })
+
+    await group.destroy()
+    return res.json({ message: "Successfully deleted" })
 })
 
 
 // GET ALL VENUES FOR GROUP BY ID (check if user is org or host) REFACTOR TO JUST FIND ALL WHERE GROUPID
-router.get('/:groupId/venues', requireAuth, async (req, res) => {
+router.get('/:groupId/venues', [restoreUser, requireAuth], async (req, res) => {
 
     const userId = req.user.id
     const { groupId } = req.params
@@ -245,7 +225,9 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
     })
     if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
-    return res.json({ Venues: group.Venues })
+    if (await isCoHost(group, userId) || group.organizerId === userId) return res.json({ Venues: group.Venues })
+
+    return res.status(403).json({ message: "You are not the organizer or co-host" })
 })
 
 
@@ -262,49 +244,34 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
         return res.status(400).json(err)
     }
 
-
-    // check if user is organizer of group or co-host member
     const userId = req.user.id
     const { groupId } = req.params
 
     const { address, city, state, lat, lng } = req.body
 
-    const groupTest = await Group.findByPk(groupId)
-    if (!groupTest) return res.status(404).json({ message: "Group couldn't be found" })
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
-    const group = await Group.findByPk(groupId,
-        {
-            include: [{
-                model: User,
-                through: {
-                    model: Membership,
-                    attributes: ['id', 'status']
-                },
-                where: { id: userId }
-            }]
-        })
-    if (!group) return res.status(400).json({ message: "You are not an organizer or member" })
+    if (await isCoHost(group, userId) || group.organizerId === userId) {
+        // create venue, add the group id
+        const venue = await Venue.create({ groupId: parseInt(groupId), address, city, state, lat, lng })
 
-    if (group.dataValues.organizerId !== userId && group.dataValues.Organizer[0].Membership.status !== 'co-host') {
-        return res.status(400).json({ message: "You are not an organizer or co-host" })
+        // remove updatedAt, createAt key/values
+        delete venue.dataValues.updatedAt
+        delete venue.dataValues.createdAt
+
+        return res.status(201).json(venue)
     }
 
-
-    // create venue, add the group id
-    const venue = await Venue.create({ address, city, state, lat, lng })
-    venue.groupId = groupId
-    venue.save()
-
-    // remove updatedAt, createAt key/values
-    delete venue.dataValues.updatedAt
-    delete venue.dataValues.createdAt
-
-    return res.status(201).json(venue)
+    return res.status(403).json({ message: "You are not the organizer or co-host" })
 })
 
 // GET ALL EVENTS OF GROUP BY ID
 router.get('/:groupId/events', async (req, res) => {
     const { groupId } = req.params
+
+    const groupTest = await Group.findByPk(groupId)
+    if (!groupTest) return res.status(404).json({ message: "Group couldn't be found" })
 
     const events = await Event.findAll({
         where: { groupId },
@@ -316,6 +283,16 @@ router.get('/:groupId/events', async (req, res) => {
             {
                 model: Venue,
                 attributes: ['id', 'city', 'state']
+            },
+            {
+                model: User,
+                through: {
+                    attributes: []
+                }
+            },
+            {
+                model: EventImage,
+                attributes: ['id', 'url', 'preview']
             }],
         attributes:
         {
@@ -323,35 +300,29 @@ router.get('/:groupId/events', async (req, res) => {
         }
     })
 
-    if (!events.length) return res.status(404).json({ message: "Group couldn't be found" })
+    if (!events.length) return res.status(404).json({ message: "There are no events for this group" })
 
+    let eventArr = []
+    events.forEach(async event => { eventArr.push(event.toJSON()) })
 
-    const eventImages = await EventImage.findAll({
-        attributes: ['eventId', 'preview', 'url']
+    eventArr.forEach(event => {
+        event.numAttending = event.Users.length
+        delete event.Users
+
+        let previewImage = event.EventImages.filter(image => { return image.preview === true })
+        if (!previewImage.length) event.previewImage = 'default preview image url'
+        else event.previewImage = previewImage[0].url
+
+        delete event.EventImages
     })
-
-    const attendances = await Attendance.findAll({
-        attributes: ['userId', 'eventId', 'status']
-    })
-
-    events.forEach(event => {
-        let previewImage = eventImages.find(image => (image.eventId === event.id && image.preview))
-
-        if (previewImage) event.dataValues.previewImage = previewImage.url
-        else event.dataValues.previewImage = "default event image url"
-
-
-        let numAttending = attendances.filter(attendee => attendee.eventId === event.id).length
-        event.dataValues.numAttending = numAttending
-    })
-
-    return res.json({ Events: events })
+    return res.json({ Events: eventArr })
 })
 
 
 // CREATE EVENT FOR GROUP BY ID (CHECK IF USER IS ORG OR HOST)
 router.post('/:groupId/events', requireAuth, async (req, res) => {
     const { groupId } = req.params
+    const userId = req.user.id
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
@@ -365,43 +336,23 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
         return res.status(400).json(err)
     }
 
-    // Validate the venue
     const venue = await Venue.findByPk(venueId)
     if (!venue) return res.status(404).json({ message: "Venue couldn't be found" })
 
-    // check if user is organizer or co-host
-    const userId = req.user.id
-    const grouptest = await Group.findByPk(groupId)
-    if (!grouptest) return res.status(404).json({ message: "Group couldn't be found" })
 
-    const group = await Group.findByPk(groupId,
-        {
-            include: [{
-                model: User,
-                through: {
-                    model: Membership,
-                    attributes: ['id', 'status']
-                },
-                where: { id: userId }
-            }]
-        })
-    if (!group) return res.status(404).json({ message: "You are not an organizer or member" })
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
-    if (group.dataValues.organizerId !== userId && group.dataValues.Organizer[0].Membership.status !== 'co-host') {
-        return res.status(404).json({ message: "You are not an organizer or co-host" })
+    if (await isCoHost(group, userId) || group.organizerId === userId) {
+        const event = await Event.create({ groupId: parseInt(groupId), venueId, name, type, capacity, price, description, startDate, endDate })
+
+        delete event.dataValues.updatedAt
+        delete event.dataValues.createdAt
+
+        return res.json(event)
     }
 
-
-    //create the new event
-    const event = await Event.create({ venueId, name, type, capacity, price, description, startDate, endDate })
-
-    event.groupId = groupId
-    event.save()
-
-    delete event.dataValues.updatedAt
-    delete event.dataValues.createdAt
-
-    return res.json(event)
+    return res.status(403).json({ message: "You are not the organizer or co-host" })
 })
 
 // GET ALL MEMBERS OF GROUP BY ID (CHECK AUTHS)

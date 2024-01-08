@@ -70,4 +70,18 @@ const requireAuth = function (req, _res, next) {
     return next(err);
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+const isCoHost = async (group, userId) => {
+    let coHost = await group.getUsers({
+        through: {
+            where: {
+                userId,
+                status: 'co-host'
+            }
+        }
+    })
+
+    if (coHost.length) return true
+    return false
+}
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, isCoHost };
