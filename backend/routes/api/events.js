@@ -279,7 +279,9 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
         where: { userId, groupId },
     })
     if (!member) return res.status(404).json({ message: "User is not a member of the group" })
-    if (member.status === 'pending') return res.status(403).json({ message: "User is not yet a member of this group" })
+    if (member.status === 'pending') return res.status(403).json({ message: "Forbidden" })
+
+    if (member.groupId !== event.groupId) return res.status(403).json({ message: "Forbidden" })
 
     let attendance = await Attendance.findOne({
         where: { eventId, userId }
