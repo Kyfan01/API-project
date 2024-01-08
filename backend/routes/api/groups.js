@@ -1,6 +1,6 @@
 const express = require('express')
 const { Group, Membership, GroupImage, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
-const { requireAuth } = require('../../utils/auth')
+const { requireAuth, restoreUser } = require('../../utils/auth')
 const { check } = require('express-validator');
 const { handleValidationErrors, validateGroup, validateVenue, validateEvent } = require('../../utils/validation');
 // const membership = require('../../db/models/membership');
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
 })
 
 // GET ALL GROUPS JOINED BY CURRENT USER
-router.get('/current', requireAuth, async (req, res) => {
+router.get('/current', [restoreUser, requireAuth], async (req, res) => {
     const userId = req.user.id
 
     const members = await Membership.findAll()
@@ -47,7 +47,6 @@ router.get('/current', requireAuth, async (req, res) => {
     const groups = await Group.findAll({
         include: [{
             model: User,
-            as: 'Organizer',
             through: {
                 model: Membership,
                 attributes: []
@@ -83,16 +82,14 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:groupId', async (req, res) => {
     const { groupId } = req.params
 
-    const groups = await Group.findByPk(groupId, {
+    let group = await Group.findByPk(groupId, {
         include: [
             {
                 model: GroupImage,
                 attributes: ['id', 'url', 'preview']
             },
             {
-                model: User,
-                as: 'Organizer',
-                attributes: ['id', 'firstName', 'lastName']
+                model: User
             },
             {
                 model: Venue
@@ -100,22 +97,30 @@ router.get('/:groupId', async (req, res) => {
         ]
     })
 
-    if (groups) {
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
-        const members = await Membership.findAll({
-            where: { groupId: groups.id },
-            attributes: ['userId', 'groupId']
-        })
+    group = group.toJSON()
 
-        groups.dataValues.numMembers = members.length
+    // let organizer = await group.getUser()
 
-        return res.json(groups)
+    // group.Organizer
 
-    } else return res.status(404).json({ message: "Group couldn't be found" })
+    const members = await Membership.findAll({
+        where: { groupId: group.id },
+        attributes: ['userId', 'groupId']
+    })
+
+    let numMembers = members.filter(member => member.groupId === group.id).length
+    group.numMembers = numMembers
+
+    delete group.Users
+    // delete group.Organizer.Membership
+
+    return res.json(group)
 })
 
 // CREATE NEW GROUP
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', [restoreUser, requireAuth], async (req, res) => {
 
     const newGroupErr = validateGroup(req.body)
 
@@ -127,17 +132,14 @@ router.post('/', requireAuth, async (req, res) => {
     }
 
     const { name, about, type, private, city, state } = req.body
-    const group = await Group.create({ name, about, type, private, city, state })
-    const userId = req.user.id
-
-    group.organizerId = userId
+    const group = await Group.create({ organizerId: req.user.id, name, about, type, private, city, state })
     group.save()
 
     return res.status(201).json(group)
 })
 
 // ADD IMAGE TO GROUP BY GROUP ID
-router.post('/:groupId/images', requireAuth, async (req, res) => {
+router.post('/:groupId/images', [restoreUser, requireAuth], async (req, res) => {
 
     const userId = req.user.id
     const { groupId } = req.params
@@ -148,7 +150,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 
     else if (group.organizerId === userId) {
 
-        const newImage = await GroupImage.create({ url, preview })
+        const newImage = await GroupImage.create({ groupId: parseInt(groupId), url, preview })
         newImage.save()
 
         const confirmedImage = {
@@ -274,7 +276,6 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']
@@ -377,7 +378,6 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']

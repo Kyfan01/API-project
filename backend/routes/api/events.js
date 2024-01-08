@@ -172,7 +172,6 @@ router.put('/:eventId', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']
@@ -235,7 +234,6 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']
@@ -362,7 +360,6 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         {
             include: [{
                 model: User,
-                as: 'Organizer',
                 through: {
                     model: Membership,
                     attributes: ['id', 'status']
