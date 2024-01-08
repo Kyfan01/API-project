@@ -471,7 +471,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     } else return res.status(403).json({ message: "You do not have permission to make this change" })
 })
 
-// DELETE MEMBERSHIP TO GROUP BY ID (MIGHT NEED TO CHANGE WHAT MEMBER MEANS)
+// DELETE MEMBERSHIP TO GROUP BY ID
 router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) => {
     const { groupId, memberId } = req.params
     const userId = req.user.id
@@ -482,16 +482,12 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) =>
     const user = await User.findByPk(memberId)
     if (!user) return res.status(404).json({ message: "User couldn't be found" })
 
-    const userMembership = await Membership.findOne({
-        where: { userId, groupId }
-    })
-
     const delMembership = await Membership.findOne({
         where: { userId: memberId, groupId }
     })
     if (!delMembership) return res.status(404).json({ message: "Membership does not exist for this User" })
 
-    if (group.organizerId == userId || memberId == userId || userMembership.status === "co-host") {
+    if (group.organizerId == userId || memberId == userId) {
         await delMembership.destroy()
         return res.json({ message: "Successfully deleted membership from group" })
     }
