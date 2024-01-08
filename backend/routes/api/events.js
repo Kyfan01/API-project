@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
     if (Number.isNaN(size) || size > 20) size = 20
 
     const searchObj = {}
-    if (name) searchObj.where.name = { [Op.substring]: name }
-    if (type) searchObj.where.type = { [Op.in]: ['Online', 'In Person'] }
-    if (startDate) searchObj.where.startDate = startDate
+    if (name) searchObj.name = { [Op.substring]: name }
+    if (type) searchObj.type = { [Op.in]: ['Online', 'In Person'] }
+    if (startDate) searchObj.startDate = startDate
 
     const events = await Event.findAll(
         {
@@ -138,7 +138,7 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
 
 
     // create the new Image
-    const newImage = await EventImage.create({ url, preview })
+    const newImage = await EventImage.create({ eventId: parseInt(eventId), url, preview })
     newImage.save()
     const confirmedImage = {
         id: newImage.id,
@@ -302,31 +302,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 router.put('/:eventId/attendance', requireAuth, async (req, res) => {
     const { eventId } = req.params
     const { userId, status } = req.body
-
-    const event = await Event.findByPk(eventId)
-    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
-
     const reqUserId = req.user.id
-    const grouptest = await Group.findByPk(groupId)
-    if (!grouptest) return res.status(404).json({ message: "Group couldn't be found" })
-
-    const group = await Group.findByPk(groupId,
-        {
-            include: [{
-                model: User,
-                through: {
-                    model: Membership,
-                    attributes: ['id', 'status']
-                },
-                where: { id: reqUserId }
-            }]
-        })
-    if (!group) return res.status(404).json({ message: "You are not an organizer or member" })
-
-    if (group.dataValues.organizerId !== reqUserId && group.dataValues.Organizer[0].Membership.status !== 'co-host') {
-        return res.status(404).json({ message: "You are not an organizer or co-host" })
-    }
-
 
     if (status === "pending") return res.status(400).json({
         message: "Bad Request",
@@ -335,23 +311,37 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     })
 
+    const event = await Event.findByPk(eventId)
+    if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
     const user = await User.findByPk(userId)
     if (!user) return res.status(404).json({ message: "User couldn't be found" })
 
-    const attendee = await Attendance.findOne({
+
+    const groupId = event.groupId
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+
+
+    let attendance = await Attendance.findOne({
         where: { userId, eventId },
         attributes: ['id', 'userId', 'eventId', 'status']
     })
-    if (!attendee) return res.status(404).json({ message: "ttendance between the user and the event does not exist" })
+    if (!attendance) return res.status(404).json({ message: "Attendance between the user and the event does not exist" })
 
-    attendee.status = status
-    attendee.save()
+    if (await isCoHost(group, reqUserId) || group.organizerId == reqUserId) {
+        attendance.status = status
+        await attendance.save()
 
-    delete attendee.dataValues.updatedAt
-    delete attendee.dataValues.createdAt
+        attendance = attendance.toJSON()
 
-    return res.json(attendee)
+        delete attendance.updatedAt
+        delete attendance.createdAt
 
+        return res.json(attendance)
+    }
+
+    return res.status(403).json({ message: "You do not have permission to make this change" })
 })
 
 // DELETE ATTENDANCE TO EVENT BY ID (NEED AUTH)
@@ -365,15 +355,21 @@ router.delete('/:eventId/attendance/:userId', requireAuth, async (req, res) => {
     const user = await User.findByPk(userId)
     if (!user) return res.status(404).json({ message: "User couldn't be found" })
 
+    const groupId = event.groupId
+    const group = await Group.findByPk(groupId)
+
     const attendance = await Attendance.findOne({
         where: { userId, eventId }
     })
-    if (!attendance) {
-        return res.status(404).json({ message: "Attendance does not exist for this user" })
-    } else {
+    if (!attendance) return res.status(404).json({ message: "Attendance does not exist for this user" })
+
+
+    if (group.organizerId == reqUserId || reqUserId == userId) {
         await attendance.destroy()
         return res.json({ message: "Successfully deleted attendance from event" })
     }
+
+    return res.status(403).json({ message: "You do not have permission to delete this attendance" })
 })
 
 

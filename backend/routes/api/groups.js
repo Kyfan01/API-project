@@ -425,8 +425,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     const { groupId } = req.params
     const { memberId, status } = req.body
     const userId = req.user.id
-    // let userPerm = ""
-    // let permArr = ['organizer', 'co-host']
 
     if (status === "pending") res.json({
         message: "Bad Request",
@@ -477,7 +475,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res) => {
     const { groupId, memberId } = req.params
     const userId = req.user.id
-    let userPerm = false
 
     const group = await Group.findByPk(groupId)
     if (!group) return res.status(404).json({ message: "Group couldn't be found" })
