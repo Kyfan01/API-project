@@ -47,12 +47,15 @@ router.get('/current', [restoreUser, requireAuth], async (req, res) => {
         where: { organizerId: userId }
     })
 
+    console.log(orgGroups)
+
     // find all member groups
     const memberGroups = await Membership.findAll({
         where: {
             userId
         }
     })
+    console.log(memberGroups)
 
     // find subset of unique groups
     const allGroupsArr = []

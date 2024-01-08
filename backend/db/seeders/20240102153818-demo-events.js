@@ -74,7 +74,7 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up',
+        name: 'Boston Pick-up2',
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
@@ -84,7 +84,7 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up',
+        name: 'Boston Pick-up3',
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
@@ -94,7 +94,7 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up',
+        name: 'Boston Pick-up4',
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
@@ -104,7 +104,7 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up',
+        name: 'Boston Pick-up5',
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
