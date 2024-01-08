@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 
     const searchObj = {}
     if (name) searchObj.name = { [Op.substring]: name }
-    if (type) searchObj.type = { [Op.in]: ['Online', 'In Person'] }
+    if (type) searchObj.type = type
     if (startDate) searchObj.startDate = startDate
 
     const events = await Event.findAll(
@@ -123,29 +123,32 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
     const { url, preview } = req.body
 
     const event = await Event.findByPk(eventId)
-
-    console.log(event.toJSON())
     if (!event) return res.status(404).json({ message: "Event couldn't be found" })
+
+    const groupId = event.groupId
+
+    const group = await Group.findByPk(groupId)
+    if (!group) return res.status(404).json({ message: "Group couldn't be found" })
+
 
     //check if user is attendee, host or co-host
     const attendance = await Attendance.findOne({
-        where: { userId, eventId }
+        where: { userId, eventId, status: 'attending' }
     })
-    if (!attendance) return res.status(400).json({ message: "User is not attending this event" })
-    const allowedAttArr = ['attending', 'host', 'co-host']
 
-    if (!allowedAttArr.includes(attendance.status)) return res.status(400).json({ message: "Current User must be an attendee, host, or co-host of the event" })
+    if (attendance || await isCoHost(group, userId) || group.organizerId === userId) {
+        const newImage = await EventImage.create({ eventId: parseInt(eventId), url, preview })
+        await newImage.save()
+        const confirmedImage = {
+            id: newImage.id,
+            url: newImage.url,
+            preview: newImage.preview
+        }
+        return res.json(confirmedImage)
 
-
-    // create the new Image
-    const newImage = await EventImage.create({ eventId: parseInt(eventId), url, preview })
-    newImage.save()
-    const confirmedImage = {
-        id: newImage.id,
-        url: newImage.url,
-        preview: newImage.preview
     }
-    return res.json(confirmedImage)
+
+    return res.status(403).json({ message: "Current User must be an attendee, host, or co-host of the event" })
 })
 
 // EDIT EVENT BY ID (UPDATE AUTH)
@@ -276,7 +279,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
         where: { userId, groupId },
     })
     if (!member) return res.status(404).json({ message: "User is not a member of the group" })
-    if (member.status === 'pending') return res.status(400).json({ message: "User is not yet a member of this group" })
+    if (member.status === 'pending') return res.status(403).json({ message: "User is not yet a member of this group" })
 
     let attendance = await Attendance.findOne({
         where: { eventId, userId }
@@ -284,8 +287,8 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 
     if (attendance) {
         attendance = attendance.toJSON()
-        if (attendance.status === 'attending') return res.status(400).json({ message: "User is already an attendee of the event" })
-        else return res.status(400).json({ message: "Attendance has already been requested" })
+        if (attendance.status === 'attending') return res.status(403).json({ message: "User is already an attendee of the event" })
+        else return res.status(403).json({ message: "Attendance has already been requested" })
     }
 
     await Attendance.create({ userId, eventId: parseInt(eventId), status: "pending" })
@@ -306,9 +309,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
 
     if (status === "pending") return res.status(400).json({
         message: "Bad Request",
-        errors: {
-            status: "Cannot change an attendance status to pending"
-        }
+        errors: { status: "Cannot change an attendance status to pending" }
     })
 
     const event = await Event.findByPk(eventId)
