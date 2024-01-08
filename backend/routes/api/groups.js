@@ -20,8 +20,6 @@ router.get('/', async (req, res) => {
         }]
     })
 
-
-
     let groupArr = []
     groups.forEach(async group => { groupArr.push(group.toJSON()) })
 
@@ -44,15 +42,15 @@ router.get('/', async (req, res) => {
 router.get('/current', [restoreUser, requireAuth], async (req, res) => {
     const userId = req.user.id
 
-    const members = await Membership.findAll()
+
 
     //find all groups joined by user
     const groups = await Group.findAll({
         include: [{
             model: User,
+            where: { id: userId },
             through: {
-                model: Membership,
-                where: { id: userId }
+                model: Membership
             },
             attributes: [],
         },
@@ -63,12 +61,14 @@ router.get('/current', [restoreUser, requireAuth], async (req, res) => {
     })
 
     let groupArr = []
-    groups.forEach(group => { groupArr.push(group.toJSON()) })
+    groups.forEach(group => groupArr.push(group.toJSON()))
+
+    const members = await Membership.findAll()
 
     groupArr.forEach(group => {
         // find the number of members for each group by searching array of all members
-        let numMembers = members.filter(member => member.groupId === group.id).length
-        group.numMembers = numMembers
+        group.numMembers = members.filter(member => member.groupId === group.id).length
+        delete group.Users
 
         // find and set preview image if it exists for each group, set default if it does not exist
         let previewImage = group.GroupImages.filter(image => { return image.preview === true })
@@ -343,7 +343,7 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
     if (!group) return res.status(404).json({ message: "Group couldn't be found" })
 
     if (await isCoHost(group, userId) || group.organizerId === userId) {
-        const event = await Event.create({ groupId: parseInt(groupId), venueId, name, type, capacity, price, description, startDate, endDate })
+        const event = await Event.create({ groupId: parseInt(groupId), venueId, name, type, capacity, price: parseFloat(price), description, startDate, endDate })
 
         delete event.dataValues.updatedAt
         delete event.dataValues.createdAt
