@@ -21,8 +21,8 @@ router.get('/', async (req, res) => {
 
     let { page, size, name, type, startDate } = req.query
 
-    if (!size) size = 1
-    if (!page) page = 20
+    if (!size) size = 20
+    if (!page) page = 1
 
     page = parseInt(page)
     size = parseInt(size)
@@ -30,8 +30,6 @@ router.get('/', async (req, res) => {
     if (page > 10) page = 1
     if (size > 20) size = 20
 
-    console.log(page)
-    console.log(size)
 
     const searchObj = {}
     if (name) searchObj.name = { [Op.substring]: name }
