@@ -78,8 +78,6 @@ const validateQuery = query => {
 
     const startTime = new Date(startDate).getTime()
 
-    //console.log(page)
-
     if (page != null && page < 1) errObj.page = "Page must be greater than or equal to 1"
     if (size != null && size < 1) errObj.size = "Size must be greater than or equal to 1"
     if (name && typeof name !== 'string') errObj.name = "Name must be a string"

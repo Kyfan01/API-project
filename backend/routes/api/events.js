@@ -10,6 +10,10 @@ const router = express.Router();
 // GET ALL EVENTS
 router.get('/', async (req, res) => {
 
+    let { page, size, name, type, startDate } = req.query
+
+    if (!Number.isNaN(page) || !Number.isNaN(size)) return res.status(400).json({ message: "column 'nan' does not exist" })
+
     const newQueryErr = validateQuery(req.query)
 
     if (Object.keys(newQueryErr).length) {
@@ -19,10 +23,8 @@ router.get('/', async (req, res) => {
         return res.status(400).json(err)
     }
 
-    let { page, size, name, type, startDate } = req.query
-
-    if (!size) size = 20
     if (!page) page = 1
+    if (!size) size = 20
 
     page = parseInt(page)
     size = parseInt(size)
