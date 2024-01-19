@@ -70,7 +70,7 @@ const validateEvent = body => {
 
 const validateQuery = query => {
 
-    console.log(query)
+    //console.log(query)
     const { page, size, name, type, startDate } = query
     const errObj = {}
     const typeArr = ['Online', 'In person']
