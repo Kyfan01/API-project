@@ -59,25 +59,32 @@ module.exports = {
         lastName: 'Fan'
       },
       {
-        email: 'geekfreak2@user.io',
-        username: 'Kevin2 Fantetokounmpo',
-        hashedPassword: bcrypt.hashSync('basketball'),
-        firstName: 'Kevin',
-        lastName: 'Fan'
+        email: 'greekfreak@user.io',
+        username: 'Alphabet Bro',
+        hashedPassword: bcrypt.hashSync('bucks'),
+        firstName: 'Giannis',
+        lastName: 'Antetokounmpo'
       },
       {
-        email: 'geek3freak@user.io',
-        username: 'Kevin3 Fantetokounmpo',
-        hashedPassword: bcrypt.hashSync('basketball'),
-        firstName: 'Kevin',
-        lastName: 'Fan'
+        email: 'chefcurry@user.io',
+        username: 'Chef Curry',
+        hashedPassword: bcrypt.hashSync('warriors'),
+        firstName: 'Steph',
+        lastName: 'Curry'
       },
       {
-        email: 'geek4freak@user.io',
-        username: 'Kevin5 Fantetokounmpo',
-        hashedPassword: bcrypt.hashSync('basketball'),
-        firstName: 'Kevin',
-        lastName: 'Fan'
+        email: 'justakidfromakron@user.io',
+        username: 'King James',
+        hashedPassword: bcrypt.hashSync('lakers'),
+        firstName: 'LeBron',
+        lastName: 'James'
+      },
+      {
+        email: 'joker@user.io',
+        username: 'The Joker',
+        hashedPassword: bcrypt.hashSync('lakers'),
+        firstName: 'Nikola',
+        lastName: 'Jokić'
       }
     ], { validate: true });
 
@@ -92,7 +99,7 @@ module.exports = {
      */
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['yrag', 'LeDennis James', 'The Shy II', 'hungrycat', 'Kevin Fantetokounmpo'] }
+      username: { [Op.in]: ['yrag', 'LeDennis James', 'The Shy II', 'hungrycat', 'Kevin Fantetokounmpo', 'Alphabet Bro', 'Chef Curry', 'King James', 'The Joker'] }
     }, {});
   }
 };

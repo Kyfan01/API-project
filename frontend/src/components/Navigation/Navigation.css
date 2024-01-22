@@ -1,5 +1,31 @@
 .profile-dropdown {
-  position: absolute;
+  position: relative;
+  /* left: initial; */
+}
+
+#navlogo {
+  height: 50px;
+  width: auto;
+}
+
+.navbar {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  background-color: #8E71A2;
+  padding: 10px 20px;
+  transition: 0.5s;
+  box-sizing: border-box;
+  /* position: fixed; */
+  width: 100%;
+  top: 0;
+  /* z-index: 1; */
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
 }
 
 .hidden {

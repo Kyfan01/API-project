@@ -1,4 +1,4 @@
-# Groupr
+# Ballr
 
 ## Database Schema Design
 
