@@ -1,7 +1,9 @@
 /* TODO: Add sitewide styles */
 
 #site-body {
-    display: flex;
-    flex-direction: column;
     margin: 0;
+}
+
+* {
+    font-family: 'Outfit', sans-serif;
 }

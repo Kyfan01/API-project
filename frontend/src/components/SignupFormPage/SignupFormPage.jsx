@@ -40,13 +40,6 @@ function SignupFormPage() {
     });
   };
 
-  const isValidForm = () => {
-    const isValid = email.length === 0
-      || username.length < 4
-
-    return isValid
-  }
-
   return (
     <>
       <h1>Sign Up</h1>

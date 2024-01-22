@@ -24,10 +24,22 @@ function LoginFormModal() {
       });
   };
 
+  const isInvalidForm = () => {
+    const isValid = credential.length < 4
+      || password.length < 6
+
+    return isValid
+  }
+
   return (
     <>
       <h1>Log In</h1>
+
       <form onSubmit={handleSubmit}>
+        <button onClick={() => {
+          setCredential('geekfreak@user.io')
+          setPassword('basketball')
+        }}>Sign In as Demo User</button>
         <label>
           Username or Email
           <input
@@ -47,7 +59,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={isInvalidForm()}>Log In</button>
       </form>
     </>
   );

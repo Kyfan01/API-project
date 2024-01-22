@@ -41,6 +41,17 @@ function SignupFormModal() {
     });
   };
 
+  const isInvalidForm = () => {
+    const isValid = email.length === 0
+      || username.length < 4
+      || password.length < 6
+      || confirmPassword.length < 6
+      || firstName.length === 0
+      || lastName.length === 0
+
+    return isValid
+  }
+
   return (
     <>
       <h1>Sign Up</h1>
@@ -105,7 +116,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isInvalidForm()}>Sign Up</button>
       </form>
     </>
   );

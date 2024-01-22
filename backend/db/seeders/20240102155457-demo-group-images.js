@@ -36,7 +36,7 @@ module.exports = {
       },
       {
         groupId: 4,
-        url: 'group4 url',
+        url: 'https://pbs.twimg.com/media/F0YGa90XgAEKsS1?format=jpg&name=900x900',
         preview: true
       },
       {

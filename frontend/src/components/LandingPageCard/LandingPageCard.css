@@ -1,0 +1,35 @@
+.landing-page-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex: 1 1 33%;
+}
+
+.landing-page-img-container {
+    display: flex;
+    justify-content: center;
+    height: 50%;
+}
+
+.landing-page-card-img {
+    display: flex;
+    max-width: 50%;
+}
+
+.landing-page-card-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+
+.landing-page-card-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}

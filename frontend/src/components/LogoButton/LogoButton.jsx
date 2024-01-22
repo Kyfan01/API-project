@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import tempLogo from '../../../../images/temp-logo.png'
+import tempLogo from '../../../../images/ballr-logo.png'
 
 function LogoButton() {
     //console.log('logo rendered')
