@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import './GroupsIndex.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroupsThunk } from '../../store/groups';
+import { fetchGroupsThunk } from '../../store/group';
 import { NavLink } from 'react-router-dom';
 import GroupsIndexCard from '../GroupsIndexCard/GroupsIndexCard';
 
