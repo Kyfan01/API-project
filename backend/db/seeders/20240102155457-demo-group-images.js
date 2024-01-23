@@ -23,15 +23,17 @@ module.exports = {
     await GroupImage.bulkCreate([
       {
         groupId: 1,
-        url: 'group1 url'
+        url: 'https://images.squarespace-cdn.com/content/v1/62d09f54a49d6f1c78455cce/67b9ee0c-7ccf-4cfd-8581-c50d5f62384a/T1_Logo_Primary+Red.png',
+        preview: true
       },
       {
         groupId: 2,
-        url: 'group2 url'
+        url: 'https://warriorswire.usatoday.com/wp-content/uploads/sites/33/2022/10/USATSI_19233965-e1666030305542.jpg?w=1000&h=600&crop=1',
+        preview: true
       },
       {
         groupId: 3,
-        url: 'group3 url',
+        url: 'https://fadeawayworld.net/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_860/MjAwNTg1NTg0NzgyMDkxMzcy/373257109_323966190050362_7615734263634948009_n.webp',
         preview: true
       },
       {
@@ -41,7 +43,7 @@ module.exports = {
       },
       {
         groupId: 5,
-        url: 'group5 url'
+        url: 'default'
       }
     ])
   },

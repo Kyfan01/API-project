@@ -11,9 +11,13 @@ export const loadGroups = groups => ({
 
 // thunk action creators
 export const fetchGroupsThunk = () => async dispatch => {
-    const res = await csrfFetch('/api/groups')
-    const groups = await res.json()
-    dispatch(loadGroups(groups))
+    try {
+        const res = await csrfFetch('/api/groups')
+        const groups = await res.json()
+        dispatch(loadGroups(groups))
+    } catch {
+        return 'thunk error to be refactored'
+    }
 }
 
 

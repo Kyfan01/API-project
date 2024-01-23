@@ -3,6 +3,7 @@ import './GroupsIndex.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroupsThunk } from '../../store/groups';
 import { NavLink } from 'react-router-dom';
+import GroupsIndexCard from '../GroupsIndexCard/GroupsIndexCard';
 
 export function GroupIndex() {
 
@@ -23,8 +24,8 @@ export function GroupIndex() {
             <h1>Groups in Ballr</h1>
 
             <div>
-                <ul>
-                    {groups.map(group => group.name)}
+                <ul className='group-index-cards-container'>
+                    {groups.map(group => <GroupsIndexCard group={group} key={group.id} />)}
                 </ul>
             </div>
 

@@ -7,6 +7,11 @@
     flex: 1 1 33%;
 }
 
+.landing-page-card-link {
+    text-decoration: none;
+    color: black;
+}
+
 .landing-page-img-container {
     display: flex;
     justify-content: center;

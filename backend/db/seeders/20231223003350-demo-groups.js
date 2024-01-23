@@ -52,7 +52,7 @@ module.exports = {
       {
         organizerId: 7,
         name: 'Dining Club',
-        about: 'This is a social dining club',
+        about: 'This is a social dining club eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat eat 50 char or more',
         type: 'Online',
         private: true,
         city: 'Cambridge',

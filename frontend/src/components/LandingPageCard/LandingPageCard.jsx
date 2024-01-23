@@ -6,7 +6,7 @@ export function LandingPageCard({ imageUrl, alt, path, cardTitle, cardText, card
     const cardTextClass = "landing-page-card-text " + cardDisabler
     return (
         <div className="landing-page-card-container">
-            <Link to={path} className={cardDisabler}>
+            <Link to={path} className={`${cardDisabler}, landing-page-card-link`}>
                 <div className="landing-page-img-container">
                     <img className="landing-page-card-img" src={imageUrl} alt={alt} />
                 </div>
