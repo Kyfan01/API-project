@@ -33,3 +33,8 @@
     text-decoration: none;
     color: black;
 }
+
+.disabled {
+    pointer-events: none;
+    color: lightgray;
+}

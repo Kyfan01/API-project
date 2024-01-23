@@ -3,24 +3,29 @@
     margin: 10px;
     justify-content: space-between;
     flex-wrap: wrap;
+    background-color: #aca693;
+    margin: 0;
 }
 
 .landing-page-intro-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex: 1 1 50%;
+    flex: 1 1 40%;
+    margin-left: 80px;
+    margin-right: 10px;
 }
 
 .landing-page-intro-img-container {
     display: flex;
     justify-content: center;
     flex: 1 1 50%;
+    align-items: center;
 }
 
 .landing-page-intro-img {
     max-width: 55%;
-    height: auto;
+    height: 90%;
 }
 
 .landing-page-intro-subtitle-container {

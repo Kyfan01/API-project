@@ -6,7 +6,7 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation-bonus';
 import * as sessionActions from './store/session';
 import LandingPage from './components/LandingPage/LandingPage';
-import GroupIndex from './components/GroupIndex'
+import GroupsIndex from './components/GroupsIndex'
 
 function Layout() {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/groups',
-        element: <GroupIndex />
+        element: <GroupsIndex />
       }
       // {
       //   path: 'login',
