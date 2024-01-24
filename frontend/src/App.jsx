@@ -8,6 +8,9 @@ import * as sessionActions from './store/session';
 import LandingPage from './components/LandingPage/LandingPage';
 import GroupsIndex from './components/GroupsIndex'
 import GroupDetailsPage from './components/GroupDetailsPage';
+import EventDetailsPage from './components/EventDetailsPage/EventDetailsPage';
+import EventsIndex from './components/EventsIndex/EventsIndex';
+
 
 function Layout() {
   const dispatch = useDispatch();
@@ -42,6 +45,14 @@ const router = createBrowserRouter([
       {
         path: '/groups/:groupId',
         element: <GroupDetailsPage />
+      },
+      {
+        path: '/events',
+        element: <EventsIndex />
+      },
+      {
+        path: '/events/:eventId',
+        element: <EventDetailsPage />
       }
       // {
       //   path: 'login',

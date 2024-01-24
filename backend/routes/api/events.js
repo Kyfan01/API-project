@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 
     let { page, size, name, type, startDate } = req.query
 
-    if (!Number.isNaN(page) || !Number.isNaN(size)) return res.status(400).json({ message: "column 'nan' does not exist" })
+    //if (!Number.isNaN(page) || !Number.isNaN(size)) return res.status(400).json({ message: "column 'nan' does not exist" })
 
     const newQueryErr = validateQuery(req.query)
 

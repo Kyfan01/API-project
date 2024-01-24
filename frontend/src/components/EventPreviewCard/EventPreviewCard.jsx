@@ -1,19 +1,19 @@
 import './EventPreviewCard.css'
 import { Link } from 'react-router-dom';
 import defaultPreviewImage from '../../../../images/def-preview-img.png'
+import { formatDate } from '../../../utils/format';
 
 export function EventPreviewCard({ event }) {
 
     const previewImage = event?.previewImage === 'default preview image url' ? defaultPreviewImage : event.previewImage
-    const eventDetailsLink = `./events/${event.id}`
 
     const eventLocation = event?.Venue ? `${event.Venue.city}, ${event.Venue.state}` : 'Location TBD'
 
-    let startDate = event?.startDate.split('T')[0]
-    let startTime = event?.startDate.split('T')[1].split(':')[0] + ':' + event?.startDate.split('T')[1].split(':')[1]
+    let startDate, startTime
+    if (event) [startDate, startTime] = formatDate(event?.startDate)
 
     return (
-        <Link to={eventDetailsLink} className='event-preview-card-link'>
+        <Link to={`/events/${event.id}`} className='event-preview-card-link'>
             <div className="event-preview-card">
                 <div className='event-preview-card-upper'>
 

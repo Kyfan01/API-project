@@ -1,0 +1,21 @@
+.event-details-upper-container {
+    display: flex;
+    max-height: 50%;
+    height: 50%;
+
+}
+
+.event-details-event-image {
+    max-width: 50%;
+    max-height: 50%;
+    width: auto;
+    height: auto;
+    margin: 50px;
+}
+
+.event-details-img-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 50%;
+}

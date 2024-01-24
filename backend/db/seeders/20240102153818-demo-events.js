@@ -78,8 +78,8 @@ module.exports = {
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
-        startDate: '1/1/2025',
-        endDate: '1/2/2025'
+        startDate: '1/2/2025',
+        endDate: '1/3/2025'
       },
       {
         venueId: 5,
@@ -88,18 +88,18 @@ module.exports = {
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
-        startDate: '1/1/2025',
-        endDate: '1/2/2025'
+        startDate: '1/3/2025',
+        endDate: '1/4/2025'
       },
       {
         venueId: 5,
         groupId: 5,
         name: 'Boston Pick-up4',
-        description: 'This is a basketball game',
+        description: 'This is a basketball game but date is earlier for sorting',
         type: 'In Person',
         price: 5,
         startDate: '1/1/2025',
-        endDate: '1/2/2025'
+        endDate: '1/1/2025'
       },
       {
         venueId: 5,
@@ -108,8 +108,8 @@ module.exports = {
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
-        startDate: '1/1/2025',
-        endDate: '1/2/2025'
+        startDate: '1/5/2025',
+        endDate: '1/6/2025'
       }
     ])
   },
