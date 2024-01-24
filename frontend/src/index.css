@@ -1,6 +1,11 @@
 /* TODO: Add sitewide styles */
+html,
+body {
+    height: 100%;
+}
 
 #site-body {
+    height: 100%;
     margin: 0;
 }
 

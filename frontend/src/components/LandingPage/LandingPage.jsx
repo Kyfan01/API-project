@@ -7,8 +7,9 @@ import { useSelector } from 'react-redux';
 
 function LandingPage() {
     const user = useSelector(state => state.session.user)
+
     const isLoggedIn = user ? true : false
-    const cardDisabler = isLoggedIn ? '' : 'disabled'
+    const disabledStyle = isLoggedIn ? '' : 'landing-page-card-disabled'
 
     return (
         <div className="landing-page-content">
@@ -26,9 +27,9 @@ function LandingPage() {
             </div>
 
             <div className="landing-page-all-cards-container">
-                <LandingPageCard imageUrl={highFive} alt="An image of a high five" path={'/groups'} cardTitle='See all Groups' cardText='Look at all the basketball groups registered on Ballr!' cardDisabler={''} />
-                <LandingPageCard imageUrl={bballCourt} alt="An image of a basketball court" path={'/events'} cardTitle='Find an event' cardText='Search for basketball events registered on Ballr!' cardDisabler={''} />
-                <LandingPageCard imageUrl={basketballPlayers} alt="An image of two basketball players" path={'/groups/new'} cardTitle='Start a new group' cardText='Register a new group on Ballr!' cardDisabler={cardDisabler} />
+                <LandingPageCard imageUrl={highFive} alt="An image of a high five" path={'/groups'} cardTitle='See all Groups' cardText='Look at all the basketball groups registered on Ballr!' disabledStyle={''} />
+                <LandingPageCard imageUrl={bballCourt} alt="An image of a basketball court" path={'/events'} cardTitle='Find an event' cardText='Search for basketball events registered on Ballr!' disabledStyle={''} />
+                <LandingPageCard imageUrl={basketballPlayers} alt="An image of two basketball players" path={'/groups/new'} cardTitle='Start a new group' cardText='Register a new group on Ballr!' disabledStyle={disabledStyle} />
             </div>
 
             <div className='landing-page-join-button-container'>

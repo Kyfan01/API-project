@@ -5,6 +5,7 @@
     flex-wrap: wrap;
     background-color: #aca693;
     margin: 0;
+    height: auto;
 }
 
 .landing-page-intro-section {

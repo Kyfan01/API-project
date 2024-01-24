@@ -64,8 +64,8 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up',
-        description: 'This is a basketball game',
+        name: 'Boston Pick-up and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots of characters',
+        description: 'This is a basketball game lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots of characters for testing',
         type: 'In Person',
         price: 5,
         startDate: '1/1/2025',

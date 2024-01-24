@@ -1,0 +1,22 @@
+.event-preview-card-link {
+    text-decoration: none;
+    color: black;
+}
+
+.event-preview-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    max-height: 20%;
+    border-bottom: black 1px solid;
+    margin-top: 20px;
+}
+
+.event-preview-card-upper {
+    display: flex;
+}
+
+.event-preview-card-image {
+    max-height: 150px;
+    max-width: 150px;
+}

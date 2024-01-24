@@ -323,7 +323,7 @@ router.get('/:groupId/events', async (req, res) => {
             }],
         attributes:
         {
-            exclude: ['createdAt', 'updatedAt', 'description', 'capacity', 'price']
+            exclude: ['createdAt', 'updatedAt', 'capacity', 'price'] //change to api, including description for front end
         }
     })
 
