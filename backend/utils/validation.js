@@ -24,13 +24,15 @@ const validateGroup = body => {
     const { name, about, type, private, city, state } = body
     const errObj = {}
     const typeArr = ['Online', 'In person']
+    if (!city) errObj.city = "City is required"
+    if (!state) errObj.state = "State is required"
+    if (!name) errObj.name = "Name is required"
+    if (!about) errObj.about = "About is required"
 
     if (name && name.length > 60) errObj.name = "Name must be 60 characters or less"
     if (about && about.length < 50) errObj.about = "About must be 50 characters or more"
     if (type && !typeArr.includes(type)) errObj.type = "Type must be 'Online' or 'In person'"
     if (private && typeof private !== 'boolean') errObj.private = "Private must be a boolean"
-    if (!city) errObj.city = "City is required"
-    if (!state) errObj.state = "State is required"
 
     return errObj
 }

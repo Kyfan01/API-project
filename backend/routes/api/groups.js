@@ -327,7 +327,7 @@ router.get('/:groupId/events', async (req, res) => {
         }
     })
 
-    if (!events.length) return res.status(404).json({ message: "There are no events for this group" })
+    //if (!events.length) return res.status(404).json({ message: "There are no events for this group" }) removed for front end
 
     let eventArr = []
     events.forEach(async event => { eventArr.push(event.toJSON()) })

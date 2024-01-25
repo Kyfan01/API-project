@@ -39,7 +39,7 @@
     color: black;
 }
 
-.landing-page-card-disabled {
+.disabled {
     pointer-events: none;
     color: lightgray;
 }

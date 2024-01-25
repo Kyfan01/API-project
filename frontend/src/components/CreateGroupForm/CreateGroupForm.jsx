@@ -1,23 +1,65 @@
 import { useDispatch } from 'react-redux';
 import './CreateGroupForm.css'
 import { useState } from 'react';
+import { createGroupThunk } from '../../store/group';
+import { useNavigate } from 'react-router-dom';
 
+//TODO need to actually add image url to group
 export function CreateGroupForm() {
-    //const dispatch = useDispatch()
-    const [city, setCity] = useState('')
-    //const [state, setState] = useState('')
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const [cityState, setCityState] = useState('')
+    // const [city, setCity] = useState('')
+    // const [state, setState] = useState('test')
     const [name, setName] = useState('')
     const [about, setAbout] = useState('')
     const [type, setType] = useState('')
     const [isPrivate, setIsPrivate] = useState('')
     const [imageUrl, setImageUrl] = useState('')
+    const [validationErr, setValidationErr] = useState({})
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(isPrivate)
+        let [city, state] = cityState.split(',')
+        city = city.trim()
+        state = state.trim()
+
+        setValidationErr({})
+        const errObj = {}
+
+        const okImageUrlEndings = ['jpg', 'jpeg', 'png']
+        const imageUrlEnding = imageUrl.split('.').slice(-1)[0]
+
+        if (!city) errObj.city = 'City is required'
+        if (!state) errObj.state = 'State is required (separated from city by comma)'
+        if (!name) errObj.name = 'Name is required'
+        if (!about) errObj.about = "Description is required"
+        if (about.length < 50) errObj.about = "Description must be at least 50 characters long"
+        if (type === "") errObj.type = "Group Type is required"
+        if (isPrivate === "") errObj.private = "Visibility Type is required"
+        if (imageUrl && !(okImageUrlEndings.includes(imageUrlEnding))) errObj.imageUrl = "Image URL needs to end in .jpg, .jpeg, or .png"
+
+        if (Object.values(errObj).length) {
+            setValidationErr(errObj)
+        } else {
+            const newGroup = {
+                city,
+                state,
+                name,
+                about,
+                type,
+                private: Boolean(isPrivate),
+            }
+
+            // Need thunk for creating image using imageUrl
+
+            //console.log(newGroup)
+            dispatch(createGroupThunk(newGroup))
+
+            navigate('/groups/')
+        }
     }
-
-
 
     return (
         <div>
@@ -27,8 +69,15 @@ export function CreateGroupForm() {
                     <h2>{"Set your group's location"}</h2>
                     <p>{"Ballr groups meet locally, in person, and online. We'll connect you with people in your area"}</p>
                     <label>
-                        <input type="text" placeholder='City, STATE' value={city} onChange={e => setCity(e.target.value)} />
+                        <input type="text" placeholder='City, STATE' value={cityState} onChange={e => setCityState(e.target.value)} />
                     </label>
+
+                    <div>
+                        {'city' in validationErr && (<span className='validation-error'>{validationErr.city}</span>)}
+                    </div>
+                    <div>
+                        {'state' in validationErr && (<span className='validation-error'>{validationErr.state}</span>)}
+                    </div>
                 </div>
 
                 <div>
@@ -37,6 +86,9 @@ export function CreateGroupForm() {
                     <label>
                         <input type="text" placeholder='What is your group name' value={name} onChange={e => setName(e.target.value)} />
                     </label>
+                    <div>
+                        {'name' in validationErr && (<span className='validation-error'>{validationErr.name}</span>)}
+                    </div>
                 </div>
 
                 <div>
@@ -48,8 +100,11 @@ export function CreateGroupForm() {
                         <li>{"What will you do at your events?"}</li>
                     </ol>
                     <label >
-                        <textarea type="text" placeholder='Please write at least 30 characters' value={about} onChange={e => setAbout(e.target.value)} />
+                        <textarea type="text" placeholder='Please write at least 50 characters' value={about} onChange={e => setAbout(e.target.value)} />
                     </label>
+                    <div>
+                        {'about' in validationErr && (<span className='validation-error'>{validationErr.about}</span>)}
+                    </div>
                 </div>
 
                 <div>
@@ -57,23 +112,34 @@ export function CreateGroupForm() {
                         <h2>{"Is this an in-person or online group?"}</h2>
                         <select name="type" value={type} onChange={e => setType(e.target.value)}>
                             <option value="" disabled>(select one)</option>
-                            <option value="In Person">In person</option>
+                            <option value="In person">In person</option>
                             <option value="Online">Online</option>
                         </select>
+                        <div>
+                            {'type' in validationErr && (<span className='validation-error'>{validationErr.type}</span>)}
+                        </div>
                     </div>
 
                     <div>
                         <h2>{"Is this group private or public?"}</h2>
-                        <select name="type" value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+                        <select name="isPrivate" value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
                             <option value="" disabled>(select one)</option>
                             <option value={true}>Private</option>
                             <option value={false}>Public</option>
                         </select>
+                        <div>
+                            {'private' in validationErr && (<span className='validation-error'>{validationErr.private}</span>)}
+                        </div>
                     </div>
                     <div>
 
                         <p>{"Please add an image url for your group below:"}</p>
-                        <input type="text" placeholder='Image Url' value={about} onChange={e => setAbout(e.target.value)} />
+                        <label htmlFor="">
+                            <input type="text" placeholder='Image Url' value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
+                        </label>
+                        <div>
+                            {'imageUrl' in validationErr && (<span className='validation-error'>{validationErr.imageUrl}</span>)}
+                        </div>
                     </div>
                 </div>
                 <div>

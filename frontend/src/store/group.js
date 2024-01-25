@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf'
 // action types
 export const LOAD_GROUPS = 'groups/loadGroups'
 // export const LOAD_GROUP_DETAILS = 'groups/loadGroupDetails'
+export const CREATE_GROUP = 'groups/createGroup'
 
 // action creators
 export const loadGroups = groups => ({
@@ -15,12 +16,19 @@ export const loadGroups = groups => ({
 //     payload: group
 // })
 
+export const createGroup = group => ({
+    type: CREATE_GROUP,
+    payload: group
+})
+
 // thunk action creators
 export const fetchGroupsThunk = () => async dispatch => {
     try {
         const res = await csrfFetch('/api/groups')
-        const groups = await res.json()
-        dispatch(loadGroups(groups))
+        if (res.ok) {
+            const groups = await res.json()
+            dispatch(loadGroups(groups))
+        }
     } catch {
         return 'groups thunk error to be refactored'
     }
@@ -35,6 +43,25 @@ export const fetchGroupsThunk = () => async dispatch => {
 //         return 'group detail thunk error to be refactored'
 //     }
 // }
+
+export const createGroupThunk = (group) => async dispatch => {
+    try {
+        const res = await csrfFetch('/api/groups', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(group)
+        })
+
+        if (res.ok) {
+            const group = await res.json()
+            dispatch(createGroup(group))
+        }
+    } catch {
+        return 'groups thunk error to be refactored'
+    }
+}
 
 
 const groupReducer = (state = {}, action) => {
@@ -51,6 +78,11 @@ const groupReducer = (state = {}, action) => {
         //     newGroupState[action.payload.id] = { ...state[action.payload.id], ...action.payload }
         //     return newGroupState
         // }
+        case CREATE_GROUP: {
+            const newGroupState = { ...state }
+            newGroupState[action.payload.id] = action.payload
+            return newGroupState
+        }
 
         default:
             return state;
