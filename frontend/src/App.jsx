@@ -10,6 +10,7 @@ import GroupsIndex from './components/GroupsIndex'
 import GroupDetailsPage from './components/GroupDetailsPage';
 import EventDetailsPage from './components/EventDetailsPage/EventDetailsPage';
 import EventsIndex from './components/EventsIndex/EventsIndex';
+import CreateGroupForm from './components/CreateGroupForm/CreateGroupForm';
 
 
 function Layout() {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: '/groups',
         element: <GroupsIndex />
+      },
+      {
+        path: '/groups/new',
+        element: <CreateGroupForm />
       },
       {
         path: '/groups/:groupId',
