@@ -42,7 +42,7 @@ export function GroupDetailsPage() {
     const upcomingEventsArr = groupEventsArr.filter(event => Date.parse(event.startDate) > Date.now());
     upcomingEventsArr.sort((a, b) => (Date.parse(a.startDate) - Date.parse(b.startDate)))
 
-
+    //Sort all past events by closeness to date
     const pastEventsArr = groupEventsArr.filter(event => Date.parse(event.startDate) < Date.now())
     pastEventsArr.sort((a, b) => (Date.parse(b.startDate) - Date.parse(a.startDate)))
 
@@ -81,7 +81,6 @@ export function GroupDetailsPage() {
                     <h3>Past Events ({pastEventsArr.length})</h3>
                     {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
                 </div>
-
             </div>
         </div>
     )
