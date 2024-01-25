@@ -30,13 +30,21 @@ export function GroupDetailsPage() {
 
     if (!group || !eventsObj) return null
 
-    const groupEventsArr = Object.values(eventsObj).filter(event => event.groupId === parseInt(groupId))
-    const eventCounter = groupEventsArr.length === 1 ? `1 Event` : `${groupEventsArr.length} Events`
-
     let groupImage = group.GroupImages?.find(image => image.preview === true)
     const groupImageUrl = groupImage ? groupImage.url : defaultPreviewImage
 
-    const eventList = groupEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)
+
+
+    const groupEventsArr = Object.values(eventsObj).filter(event => event.groupId === parseInt(groupId))
+    const eventCounter = groupEventsArr.length === 1 ? `1 Event` : `${groupEventsArr.length} Events`
+
+    //Sort all upcoming group events by closeness to date
+    const upcomingEventsArr = groupEventsArr.filter(event => Date.parse(event.startDate) > Date.now());
+    upcomingEventsArr.sort((a, b) => (Date.parse(a.startDate) - Date.parse(b.startDate)))
+
+
+    const pastEventsArr = groupEventsArr.filter(event => Date.parse(event.startDate) < Date.now())
+    pastEventsArr.sort((a, b) => (Date.parse(b.startDate) - Date.parse(a.startDate)))
 
     return (
         <div className='group-details-page'>
@@ -65,10 +73,15 @@ export function GroupDetailsPage() {
                 </div>
             </div>
             <div>
-                <h3>Upcoming Events ({groupEventsArr.length})</h3>
-                {eventList}
+                <div>
+                    <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
+                    {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                </div>
+                <div>
+                    <h3>Past Events ({pastEventsArr.length})</h3>
+                    {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                </div>
 
-                <h3>Past Events ()</h3>
             </div>
         </div>
     )

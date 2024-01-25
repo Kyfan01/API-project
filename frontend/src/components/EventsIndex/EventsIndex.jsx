@@ -9,11 +9,19 @@ export function EventsIndex() {
 
     const dispatch = useDispatch()
     const eventsObj = useSelector(state => state.events)
-    const events = Object.values(eventsObj)
+    const eventsArr = Object.values(eventsObj)
 
     useEffect(() => {
         dispatch(fetchEventsThunk())
     }, [dispatch])
+
+
+    const upcomingEventsArr = eventsArr.filter(event => Date.parse(event.startDate) > Date.now());
+    upcomingEventsArr.sort((a, b) => (Date.parse(a.startDate) - Date.parse(b.startDate)))
+
+
+    const pastEventsArr = eventsArr.filter(event => Date.parse(event.startDate) < Date.now())
+    pastEventsArr.sort((a, b) => (Date.parse(b.startDate) - Date.parse(a.startDate)))
 
     return (
         <div>
@@ -24,9 +32,16 @@ export function EventsIndex() {
             <h1>Events in Ballr</h1>
 
             <div>
-                <ul className='event-index-cards-container'>
-                    {events?.map(event => <EventPreviewCard event={event} key={event.id} />)}
-                </ul>
+                <div className='event-index-card-container'>
+                    <div>
+                        <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
+                        {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                    </div>
+                    <div>
+                        <h3>Past Events ({pastEventsArr.length})</h3>
+                        {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                    </div>
+                </div>
             </div>
 
         </div>

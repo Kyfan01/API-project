@@ -64,18 +64,8 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots of characters',
+        name: 'Boston Pick-up and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots of characters 2nd earliest',
         description: 'This is a basketball game lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots and lots of characters for testing',
-        type: 'In Person',
-        price: 5,
-        startDate: '1/1/2025',
-        endDate: '1/2/2025'
-      },
-      {
-        venueId: 5,
-        groupId: 5,
-        name: 'Boston Pick-up2',
-        description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
         startDate: '1/2/2025',
@@ -84,7 +74,7 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up3',
+        name: 'Boston Pick-up 3rd upcoming',
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
@@ -94,7 +84,17 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up4',
+        name: 'Boston Pick-up 4th upcoming',
+        description: 'This is a basketball game',
+        type: 'In Person',
+        price: 5,
+        startDate: '1/4/2025',
+        endDate: '1/5/2025'
+      },
+      {
+        venueId: 5,
+        groupId: 5,
+        name: 'Boston Pick-up earliest',
         description: 'This is a basketball game but date is earlier for sorting',
         type: 'In Person',
         price: 5,
@@ -104,12 +104,42 @@ module.exports = {
       {
         venueId: 5,
         groupId: 5,
-        name: 'Boston Pick-up5',
+        name: 'Boston Pick-up 5th upcoming',
         description: 'This is a basketball game',
         type: 'In Person',
         price: 5,
         startDate: '1/5/2025',
         endDate: '1/6/2025'
+      },
+      {
+        venueId: 5,
+        groupId: 5,
+        name: 'Boston Pick-up oldest in the past',
+        description: 'This is a basketball game',
+        type: 'In Person',
+        price: 5,
+        startDate: '1/2/2023',
+        endDate: '1/3/2023'
+      },
+      {
+        venueId: 5,
+        groupId: 5,
+        name: 'Boston Pick-up 2nd oldest in the past',
+        description: 'This is a basketball game',
+        type: 'In Person',
+        price: 5,
+        startDate: '1/3/2023',
+        endDate: '1/4/2023'
+      },
+      {
+        venueId: 5,
+        groupId: 5,
+        name: 'Boston Pick-up 3rd oldest in the past',
+        description: 'This is a basketball game',
+        type: 'In Person',
+        price: 5,
+        startDate: '1/4/2023',
+        endDate: '1/5/2023'
       }
     ])
   },
