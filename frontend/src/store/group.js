@@ -2,8 +2,7 @@ import { csrfFetch } from './csrf'
 
 // action types
 export const LOAD_GROUPS = 'groups/loadGroups'
-export const LOAD_GROUP_DETAILS = 'groups/loadGroupDetails'
-
+// export const LOAD_GROUP_DETAILS = 'groups/loadGroupDetails'
 
 // action creators
 export const loadGroups = groups => ({
@@ -11,10 +10,10 @@ export const loadGroups = groups => ({
     payload: groups
 })
 
-export const loadGroupDetails = group => ({
-    type: LOAD_GROUP_DETAILS,
-    payload: group
-})
+// export const loadGroupDetails = group => ({
+//     type: LOAD_GROUP_DETAILS,
+//     payload: group
+// })
 
 // thunk action creators
 export const fetchGroupsThunk = () => async dispatch => {
@@ -27,15 +26,15 @@ export const fetchGroupsThunk = () => async dispatch => {
     }
 }
 
-export const fetchGroupDetailsThunk = (groupId) => async dispatch => {
-    try {
-        const res = await csrfFetch(`/api/groups/${groupId}`)
-        const group = await res.json()
-        dispatch(loadGroupDetails(group))
-    } catch {
-        return 'group detail thunk error to be refactored'
-    }
-}
+// export const fetchGroupDetailsThunk = (groupId) => async dispatch => {
+//     try {
+//         const res = await csrfFetch(`/api/groups/${groupId}`)
+//         const group = await res.json()
+//         dispatch(loadGroupDetails(group))
+//     } catch {
+//         return 'group detail thunk error to be refactored'
+//     }
+// }
 
 
 const groupReducer = (state = {}, action) => {
@@ -47,11 +46,11 @@ const groupReducer = (state = {}, action) => {
             })
             return newGroupState
         }
-        case LOAD_GROUP_DETAILS: {
-            const newGroupState = { ...state }
-            newGroupState[action.payload.id] = { ...state[action.payload.id], ...action.payload }
-            return newGroupState
-        }
+        // case LOAD_GROUP_DETAILS: {
+        //     const newGroupState = { ...state }
+        //     newGroupState[action.payload.id] = { ...state[action.payload.id], ...action.payload }
+        //     return newGroupState
+        // }
 
         default:
             return state;

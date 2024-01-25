@@ -1,7 +1,6 @@
 import './EventPreviewCard.css'
 import { Link } from 'react-router-dom';
 import defaultPreviewImage from '../../../../images/def-preview-img.png'
-import { formatDate } from '../../../utils/format';
 
 export function EventPreviewCard({ event }) {
 
@@ -9,8 +8,11 @@ export function EventPreviewCard({ event }) {
 
     const eventLocation = event?.Venue ? `${event.Venue.city}, ${event.Venue.state}` : 'Location TBD'
 
-    let startDate, startTime
-    if (event) [startDate, startTime] = formatDate(event?.startDate)
+    // let startDate, startTime
+    // if (event) [startDate, startTime] = formatDate(event?.startDate)
+
+    const startDate = event.startDate?.substring(0, 10)
+    const startTime = event.startDate?.substring(11, 16)
 
     return (
         <Link to={`/events/${event.id}`} className='event-preview-card-link'>

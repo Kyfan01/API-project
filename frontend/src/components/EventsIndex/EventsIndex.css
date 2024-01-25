@@ -1,0 +1,14 @@
+.index-header-container {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #f8c200;
+}
+
+#event-index-event-header {
+    color: #00a4a9;
+}
+
+#event-index-group-header {
+    color: gray;
+    text-decoration: none;
+}

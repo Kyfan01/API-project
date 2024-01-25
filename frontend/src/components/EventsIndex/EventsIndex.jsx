@@ -17,14 +17,14 @@ export function EventsIndex() {
 
     return (
         <div>
-            <div className='events-index-header-container'>
-                <NavLink to="/events" id='events-index-event-header'>Events</NavLink>
-                <NavLink to="/groups" id='events-index-group-header'>Groups</NavLink>
+            <div className='index-header-container'>
+                <NavLink to="/events" id='event-index-event-header'>Events</NavLink>
+                <NavLink to="/groups" id='event-index-group-header'>Groups</NavLink>
             </div>
             <h1>Events in Ballr</h1>
 
             <div>
-                <ul className='events-index-cards-container'>
+                <ul className='event-index-cards-container'>
                     {events?.map(event => <EventPreviewCard event={event} key={event.id} />)}
                 </ul>
             </div>

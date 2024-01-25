@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './GroupDetailsPage.css'
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { fetchGroupDetailsThunk } from '../../store/group';
+import { fetchGroupDetailsThunk } from '../../store/currGroup';
 import { NavLink } from 'react-router-dom';
 import defaultPreviewImage from '../../../../images/def-preview-img.png'
 import { fetchGroupEventsThunk } from '../../store/event';
@@ -10,7 +10,7 @@ import EventPreviewCard from '../EventPreviewCard/EventPreviewCard';
 
 export function GroupDetailsPage() {
     const { groupId } = useParams()
-    const group = useSelector(state => state.groups[groupId])
+    const group = useSelector(state => state.currGroup)
     const user = useSelector(state => state.session.user)
 
     const isOrganizer = (parseInt(user?.id) === group?.organizerId)
@@ -53,7 +53,6 @@ export function GroupDetailsPage() {
                     <button className={`group-details-join-group-button ${hideButton}`} onClick={() => alert('Feature coming soon')}>Join this Group</button>
                 </div>
             </div>
-
 
             <div className='group-details-lower-container'>
                 <div>

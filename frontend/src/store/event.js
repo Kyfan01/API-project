@@ -3,7 +3,7 @@ import { csrfFetch } from './csrf'
 // action types
 export const LOAD_EVENTS = 'events/loadEvents'
 export const LOAD_GROUP_EVENTS = 'groups/loadGroupEvents'
-export const LOAD_EVENT_DETAILS = 'events/loadEventDetails'
+// export const LOAD_EVENT_DETAILS = 'events/loadEventDetails'
 
 // action creators
 export const loadEvents = events => ({
@@ -16,10 +16,10 @@ export const loadGroupEvents = (groupId, events) => ({
     payload: { groupId, events }
 })
 
-export const loadEventDetails = eventId => ({
-    type: LOAD_EVENT_DETAILS,
-    payload: eventId
-})
+// export const loadEventDetails = eventId => ({
+//     type: LOAD_EVENT_DETAILS,
+//     payload: eventId
+// })
 
 
 // thunk action creators
@@ -43,15 +43,15 @@ export const fetchGroupEventsThunk = groupId => async dispatch => {
     }
 }
 
-export const fetchEventDetailsThunk = eventId => async dispatch => {
-    try {
-        const res = await csrfFetch(`/api/events/${eventId}`)
-        const event = await res.json()
-        dispatch(loadEventDetails(event))
-    } catch {
-        return 'event details thunk error to be refactored'
-    }
-}
+// export const fetchEventDetailsThunk = eventId => async dispatch => {
+//     try {
+//         const res = await csrfFetch(`/api/events/${eventId}`)
+//         const event = await res.json()
+//         dispatch(loadEventDetails(event))
+//     } catch {
+//         return 'event details thunk error to be refactored'
+//     }
+// }
 
 const eventReducer = (state = {}, action) => {
     switch (action.type) {
@@ -69,11 +69,11 @@ const eventReducer = (state = {}, action) => {
             })
             return newEventState
         }
-        case LOAD_EVENT_DETAILS: {
-            const newEventState = { ...state }
-            newEventState[action.payload.id] = { ...state[action.payload.id], ...action.payload }
-            return newEventState
-        }
+        // case LOAD_EVENT_DETAILS: {
+        //     const newEventState = { ...state }
+        //     newEventState[action.payload.id] = { ...state[action.payload.id], ...action.payload }
+        //     return newEventState
+        // }
         default:
             return state;
     }

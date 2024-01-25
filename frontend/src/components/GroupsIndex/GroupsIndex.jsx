@@ -17,7 +17,7 @@ export function GroupIndex() {
 
     return (
         <div>
-            <div className='group-index-header-container'>
+            <div className='index-header-container'>
                 <NavLink to="/events" id='group-index-event-header'>Events</NavLink>
                 <NavLink to="/groups" id='group-index-group-header'>Groups</NavLink>
             </div>

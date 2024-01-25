@@ -93,7 +93,7 @@ router.get('/:eventId', async (req, res) => {
         include: [
             {
                 model: Group,
-                attributes: ['id', 'name', 'private', 'city', 'state']
+                attributes: ['id', 'name', 'private', 'city', 'state', 'organizerId'] //included organizerId to search for organizer
             },
             {
                 model: Venue,
@@ -116,8 +116,15 @@ router.get('/:eventId', async (req, res) => {
     if (!event) return res.status(404).json({ message: "Event couldn't be found" })
 
     event = event.toJSON()
+
     event.numAttending = event.Users.length
+
+
+    const organizer = await User.findByPk(event.Group.organizerId) //including organizer for front end
+    event.Group.Organizer = organizer
+
     delete event.Users
+    delete event.Group.organizerId
 
     return res.json(event)
 })
