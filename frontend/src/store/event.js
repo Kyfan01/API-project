@@ -17,9 +17,9 @@ export const loadGroupEvents = (groupId, events) => ({
     payload: { groupId, events }
 })
 
-export const createEvent = (groupId, event) => ({
+export const createEvent = event => ({
     type: CREATE_EVENT,
-    payload: { groupId, event }
+    payload: event
 })
 
 // export const loadEventDetails = eventId => ({
@@ -97,7 +97,9 @@ const eventReducer = (state = {}, action) => {
         }
         case CREATE_EVENT: {
             const newEventState = { ...state }
-            newEventState[action.payload.event.id] = action.payload.event
+
+            console.log(action.payload)
+            newEventState[action.payload.id] = action.payload
             return newEventState
         }
         // case LOAD_EVENT_DETAILS: {
