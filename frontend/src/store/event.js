@@ -71,8 +71,8 @@ export const createEventThunk = (groupId, event) => async dispatch => {
 
         if (res.ok) {
             const event = await res.json()
-            console.log(event)
             dispatch(createEvent(event))
+            return event
         }
     } catch {
         return 'groups thunk error to be refactored'

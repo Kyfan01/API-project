@@ -5,6 +5,7 @@ export const LOAD_GROUPS = 'groups/loadGroups'
 // export const LOAD_GROUP_DETAILS = 'groups/loadGroupDetails'
 export const CREATE_GROUP = 'groups/createGroup'
 
+
 // action creators
 export const loadGroups = groups => ({
     type: LOAD_GROUPS,
@@ -20,6 +21,8 @@ export const createGroup = group => ({
     type: CREATE_GROUP,
     payload: group
 })
+
+
 
 // thunk action creators
 export const fetchGroupsThunk = () => async dispatch => {
@@ -57,11 +60,13 @@ export const createGroupThunk = (group) => async dispatch => {
         if (res.ok) {
             const group = await res.json()
             dispatch(createGroup(group))
+            return group
         }
     } catch {
         return 'groups thunk error to be refactored'
     }
 }
+
 
 
 const groupReducer = (state = {}, action) => {
@@ -83,6 +88,7 @@ const groupReducer = (state = {}, action) => {
             newGroupState[action.payload.id] = action.payload
             return newGroupState
         }
+
 
         default:
             return state;

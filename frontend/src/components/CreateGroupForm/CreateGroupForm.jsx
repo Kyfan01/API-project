@@ -3,6 +3,7 @@ import './CreateGroupForm.css'
 import { useState } from 'react';
 import { createGroupThunk } from '../../store/group';
 import { useNavigate } from 'react-router-dom';
+import { createGroupImageThunk } from '../../store/currGroup';
 
 //TODO need to actually add image url to group
 export function CreateGroupForm() {
@@ -22,8 +23,8 @@ export function CreateGroupForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         let [city, state] = cityState.split(',')
-        city = city.trim()
-        state = state.trim()
+        city = city?.trim()
+        state = state?.trim()
 
         setValidationErr({})
         const errObj = {}
@@ -52,12 +53,22 @@ export function CreateGroupForm() {
                 private: Boolean(isPrivate),
             }
 
-            // Need thunk for creating image using imageUrl
-
-            //console.log(newGroup)
+            // dispatch thunk to create group in db. Then get the response from db and check if imageUrl was submitted.
+            // if there is image url, use create group image thunk to store the image in the db, then navigate to new group details page.
+            // if no image url, navigate to new group details page.
             dispatch(createGroupThunk(newGroup))
-
-            navigate('/groups/')
+                .then(resGroup => {
+                    if (resGroup && imageUrl) {
+                        const newGroupImage = {
+                            url: imageUrl,
+                            preview: true
+                        }
+                        dispatch(createGroupImageThunk(resGroup.id, newGroupImage))
+                        navigate(`/groups/${resGroup.id}`)
+                    } else {
+                        navigate(`/groups/${resGroup.id}`)
+                    }
+                })
         }
     }
 

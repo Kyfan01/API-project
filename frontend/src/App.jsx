@@ -12,7 +12,8 @@ import EventDetailsPage from './components/EventDetailsPage/EventDetailsPage';
 import EventsIndex from './components/EventsIndex/EventsIndex';
 import CreateGroupForm from './components/CreateGroupForm/CreateGroupForm';
 import CreatEventForm from './components/CreateEventForm';
-import { Modal } from './context/Modal';
+
+import { Modal } from './context/Modal'; //Keegan change
 
 
 function Layout() {
@@ -29,7 +30,9 @@ function Layout() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
-      <Modal />
+
+
+      <Modal />  {/* Keegan change */}
     </>
   );
 }

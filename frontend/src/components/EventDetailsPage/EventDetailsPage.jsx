@@ -31,9 +31,6 @@ export function EventDetailsPage() {
     const isOrganizer = (parseInt(user?.id) === organizer?.id)
     const hideButton = user && isOrganizer ? '' : 'hidden'
 
-
-    console.log(isOrganizer)
-
     return (
         <div className='event-details-page'>
             <NavLink to='/events'>{'< Events'}</NavLink>

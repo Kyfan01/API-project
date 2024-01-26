@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './CreateEventForm.css'
 import { useState, useEffect } from 'react';
@@ -8,6 +8,7 @@ import { createEventThunk } from '../../store/event';
 export function CreateEventForm() {
     const { groupId } = useParams()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(fetchGroupDetailsThunk(groupId))
@@ -36,7 +37,6 @@ export function CreateEventForm() {
         const okImageUrlEndings = ['jpg', 'jpeg', 'png']
         const imageUrlEnding = imageUrl.split('.').slice(-1)[0]
 
-        console.log(startDate)
 
         if (!name) errObj.name = 'Name is required'
         if (type === "") errObj.type = "Group Type is required"
@@ -71,8 +71,14 @@ export function CreateEventForm() {
                 description
             }
 
-            console.log(newEvent)
-            dispatch(createEventThunk(groupId, newEvent))
+
+            dispatch(createEventThunk(groupId, newEvent)).then(res => {
+                if (res) {
+                    console.log(res)
+                    navigate(`/events/${res.id}`)
+                }
+            })
+
         }
     }
 
