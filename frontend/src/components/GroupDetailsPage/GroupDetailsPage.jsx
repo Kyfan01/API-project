@@ -32,18 +32,18 @@ export function GroupDetailsPage() {
 
     if (!group || !eventsObj) return null
 
-    let groupImage = group.GroupImages?.find(image => image.preview === true)
+    let groupImage = group.GroupImages?.find(image => image?.preview === true)
     const groupImageUrl = groupImage ? groupImage.url : defaultPreviewImage
 
-    const groupEventsArr = Object.values(eventsObj).filter(event => event.groupId === parseInt(groupId))
+    const groupEventsArr = Object.values(eventsObj).filter(event => event?.groupId === parseInt(groupId))
     const eventCounter = groupEventsArr.length === 1 ? `1 Event` : `${groupEventsArr.length} Events`
 
     //Sort all upcoming group events by closeness to date
-    const upcomingEventsArr = groupEventsArr.filter(event => Date.parse(event.startDate) > Date.now());
+    const upcomingEventsArr = groupEventsArr.filter(event => Date.parse(event?.startDate) > Date.now());
     upcomingEventsArr.sort((a, b) => (Date.parse(a.startDate) - Date.parse(b.startDate)))
 
     //Sort all past events by closeness to date
-    const pastEventsArr = groupEventsArr.filter(event => Date.parse(event.startDate) < Date.now())
+    const pastEventsArr = groupEventsArr.filter(event => Date.parse(event?.startDate) < Date.now())
     pastEventsArr.sort((a, b) => (Date.parse(b.startDate) - Date.parse(a.startDate)))
 
     return (

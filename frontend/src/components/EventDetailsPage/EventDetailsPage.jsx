@@ -18,7 +18,7 @@ export function EventDetailsPage() {
 
     const event = useSelector(state => state.currEvent)
 
-    let eventImage = event?.EventImages?.find(image => image.preview === true)
+    let eventImage = event?.EventImages?.find(image => image?.preview === true)
     const eventImageUrl = eventImage ? eventImage.url : defaultPreviewImage
 
     const startDate = event.startDate?.substring(0, 10)

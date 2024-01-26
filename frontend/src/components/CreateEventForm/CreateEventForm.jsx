@@ -4,6 +4,7 @@ import './CreateEventForm.css'
 import { useState, useEffect } from 'react';
 import { fetchGroupDetailsThunk } from '../../store/currGroup';
 import { createEventThunk } from '../../store/event';
+import { createEventImageThunk } from '../../store/currEvent';
 
 export function CreateEventForm() {
     const { groupId } = useParams()
@@ -72,12 +73,19 @@ export function CreateEventForm() {
             }
 
 
-            dispatch(createEventThunk(groupId, newEvent)).then(res => {
-                if (res) {
-                    console.log(res)
-                    navigate(`/events/${res.id}`)
-                }
-            })
+            dispatch(createEventThunk(groupId, newEvent))
+                .then(resEvent => {
+                    if (resEvent && imageUrl) {
+                        const newEventImage = {
+                            url: imageUrl,
+                            preview: true
+                        }
+                        dispatch(createEventImageThunk(resEvent.id, newEventImage))
+                        navigate(`/events/${resEvent.id}`)
+                    } else {
+                        navigate(`/events/${resEvent.id}`)
+                    }
+                })
 
         }
     }
