@@ -364,7 +364,7 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
     }
 
     const venue = await Venue.findByPk(venueId)
-    if (!venue) return res.status(404).json({ message: "Venue couldn't be found" })
+    //if (!venue) return res.status(404).json({ message: "Venue couldn't be found" })
 
 
     const group = await Group.findByPk(groupId)

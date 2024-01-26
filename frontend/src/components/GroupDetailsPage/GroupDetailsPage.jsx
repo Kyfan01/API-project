@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './GroupDetailsPage.css'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchGroupDetailsThunk } from '../../store/currGroup';
 import { NavLink } from 'react-router-dom';
@@ -10,12 +10,14 @@ import EventPreviewCard from '../EventPreviewCard/EventPreviewCard';
 
 export function GroupDetailsPage() {
     const { groupId } = useParams()
+    const navigate = useNavigate()
     const group = useSelector(state => state.currGroup)
     const user = useSelector(state => state.session.user)
 
     const isOrganizer = (parseInt(user?.id) === group?.organizerId)
 
-    const hideButton = !user || isOrganizer ? 'hidden' : ''
+    const hideJoinButton = !user || isOrganizer ? 'hidden' : ''
+    const hideOrgButton = user && isOrganizer ? '' : 'hidden'
 
     const dispatch = useDispatch()
 
@@ -32,8 +34,6 @@ export function GroupDetailsPage() {
 
     let groupImage = group.GroupImages?.find(image => image.preview === true)
     const groupImageUrl = groupImage ? groupImage.url : defaultPreviewImage
-
-
 
     const groupEventsArr = Object.values(eventsObj).filter(event => event.groupId === parseInt(groupId))
     const eventCounter = groupEventsArr.length === 1 ? `1 Event` : `${groupEventsArr.length} Events`
@@ -58,8 +58,14 @@ export function GroupDetailsPage() {
                     <p>{group?.city}, {group?.state}</p>
                     <p>{eventCounter} · {privateStatus}</p>
                     <p>Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
-                    <button className={`group-details-join-group-button ${hideButton}`} onClick={() => alert('Feature coming soon')}>Join this Group</button>
+                    <button className={`group-details-join-group-button ${hideJoinButton}`} onClick={() => alert('Feature coming soon')}>Join this Group</button>
+                    <div>
+                        <button className={`group-details-create-event-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create event</button>
+                        <button className={`group-details-update-button ${hideOrgButton}`} onClick={() => alert('Feature coming soon')}>Update</button>
+                        <button className={`group-details-delete-button ${hideOrgButton}`} onClick={() => alert('Feature coming soon')}>Delete</button>
+                    </div>
                 </div>
+
             </div>
 
             <div className='group-details-lower-container'>

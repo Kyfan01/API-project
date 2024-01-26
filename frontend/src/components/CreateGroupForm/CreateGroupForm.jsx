@@ -133,7 +133,7 @@ export function CreateGroupForm() {
                     </div>
                     <div>
 
-                        <p>{"Please add an image url for your group below:"}</p>
+                        <h2>{"Please add an image url for your group below:"}</h2>
                         <label htmlFor="">
                             <input type="text" placeholder='Image Url' value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
                         </label>

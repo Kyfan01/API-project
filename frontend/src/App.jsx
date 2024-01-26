@@ -11,6 +11,8 @@ import GroupDetailsPage from './components/GroupDetailsPage';
 import EventDetailsPage from './components/EventDetailsPage/EventDetailsPage';
 import EventsIndex from './components/EventsIndex/EventsIndex';
 import CreateGroupForm from './components/CreateGroupForm/CreateGroupForm';
+import CreatEventForm from './components/CreateEventForm';
+import { Modal } from './context/Modal';
 
 
 function Layout() {
@@ -27,6 +29,7 @@ function Layout() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
+      <Modal />
     </>
   );
 }
@@ -54,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: '/events',
         element: <EventsIndex />
+      },
+      {
+        path: '/groups/:groupId/events/new',
+        element: <CreatEventForm />
       },
       {
         path: '/events/:eventId',

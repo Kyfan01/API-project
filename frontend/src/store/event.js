@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf'
 // action types
 export const LOAD_EVENTS = 'events/loadEvents'
 export const LOAD_GROUP_EVENTS = 'groups/loadGroupEvents'
+export const CREATE_EVENT = 'events/createEvent'
 // export const LOAD_EVENT_DETAILS = 'events/loadEventDetails'
 
 // action creators
@@ -14,6 +15,11 @@ export const loadEvents = events => ({
 export const loadGroupEvents = (groupId, events) => ({
     type: LOAD_GROUP_EVENTS,
     payload: { groupId, events }
+})
+
+export const createEvent = (groupId, event) => ({
+    type: CREATE_EVENT,
+    payload: { groupId, event }
 })
 
 // export const loadEventDetails = eventId => ({
@@ -53,6 +59,26 @@ export const fetchGroupEventsThunk = groupId => async dispatch => {
 //     }
 // }
 
+export const createEventThunk = (groupId, event) => async dispatch => {
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/events`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(event)
+        })
+
+        if (res.ok) {
+            const event = await res.json()
+            console.log(event)
+            dispatch(createEvent(event))
+        }
+    } catch {
+        return 'groups thunk error to be refactored'
+    }
+}
+
 const eventReducer = (state = {}, action) => {
     switch (action.type) {
         case LOAD_EVENTS: {
@@ -67,6 +93,11 @@ const eventReducer = (state = {}, action) => {
             action.payload.events.Events.forEach(event => {
                 newEventState[event.id] = event
             })
+            return newEventState
+        }
+        case CREATE_EVENT: {
+            const newEventState = { ...state }
+            newEventState[action.payload.event.id] = action.payload.event
             return newEventState
         }
         // case LOAD_EVENT_DETAILS: {
