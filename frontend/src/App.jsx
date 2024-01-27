@@ -15,8 +15,6 @@ import CreatEventForm from './components/CreateEventForm';
 
 import { Modal } from './context/Modal'; //Keegan change
 import UpdateGroupForm from './components/UpdateGroupForm/UpdateGroupForm';
-import DeleteGroupModal from './components/DeleteGroupModal/DeleteGroupModal';
-
 
 function Layout() {
   const dispatch = useDispatch();
