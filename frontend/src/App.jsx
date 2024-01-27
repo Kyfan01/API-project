@@ -14,6 +14,8 @@ import CreateGroupForm from './components/CreateGroupForm/CreateGroupForm';
 import CreatEventForm from './components/CreateEventForm';
 
 import { Modal } from './context/Modal'; //Keegan change
+import UpdateGroupForm from './components/UpdateGroupForm/UpdateGroupForm';
+import DeleteGroupModal from './components/DeleteGroupModal/DeleteGroupModal';
 
 
 function Layout() {
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <LandingPage />,
+        element: <LandingPage />
       },
       {
         path: '/groups',
@@ -56,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: '/groups/:groupId',
         element: <GroupDetailsPage />
+      },
+      {
+        path: '/groups/:groupId/update',
+        element: <UpdateGroupForm />
       },
       {
         path: '/events',

@@ -16,7 +16,7 @@ export function EventPreviewCard({ event }) {
 
     return (
         <Link to={`/events/${event.id}`} className='event-preview-card-link'>
-            <div className="event-preview-card">
+            <div className="event-preview-card" title={event?.name}>
                 <div className='event-preview-card-upper'>
 
                     <img className="event-preview-card-image" src={previewImage} alt="Event preview image" />

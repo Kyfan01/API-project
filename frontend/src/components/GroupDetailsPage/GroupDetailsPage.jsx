@@ -7,6 +7,8 @@ import { NavLink } from 'react-router-dom';
 import defaultPreviewImage from '../../../../images/def-preview-img.png'
 import { fetchGroupEventsThunk } from '../../store/event';
 import EventPreviewCard from '../EventPreviewCard/EventPreviewCard';
+import DeleteGroupModal from '../DeleteGroupModal/DeleteGroupModal';
+import OpenModalButton from '../OpenModalButton'
 
 export function GroupDetailsPage() {
     const { groupId } = useParams()
@@ -61,8 +63,8 @@ export function GroupDetailsPage() {
                     <button className={`group-details-join-group-button ${hideJoinButton}`} onClick={() => alert('Feature coming soon')}>Join this Group</button>
                     <div>
                         <button className={`group-details-create-event-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create event</button>
-                        <button className={`group-details-update-button ${hideOrgButton}`} onClick={() => alert('Feature coming soon')}>Update</button>
-                        <button className={`group-details-delete-button ${hideOrgButton}`} onClick={() => alert('Feature coming soon')}>Delete</button>
+                        <button className={`group-details-update-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/update`)}>Update</button>
+                        <OpenModalButton className={`group-details-delete-button ${hideOrgButton}`} buttonText='Delete' modalComponent={<DeleteGroupModal group={group} />} />
                     </div>
                 </div>
 

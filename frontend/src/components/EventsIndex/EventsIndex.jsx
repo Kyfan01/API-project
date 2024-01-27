@@ -13,7 +13,7 @@ export function EventsIndex() {
 
     useEffect(() => {
         dispatch(fetchEventsThunk())
-    }, [dispatch])
+    }, [dispatch, eventsArr.length])
 
 
     const upcomingEventsArr = eventsArr.filter(event => Date.parse(event.startDate) > Date.now());

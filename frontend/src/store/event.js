@@ -4,7 +4,8 @@ import { csrfFetch } from './csrf'
 export const LOAD_EVENTS = 'events/loadEvents'
 export const LOAD_GROUP_EVENTS = 'groups/loadGroupEvents'
 export const CREATE_EVENT = 'events/createEvent'
-// export const LOAD_EVENT_DETAILS = 'events/loadEventDetails'
+export const CLEAR_EVENTS_STATE = 'events/refreshEvents'
+export const DELETE_EVENT = 'events/deleteEvent'
 
 // action creators
 export const loadEvents = events => ({
@@ -22,11 +23,14 @@ export const createEvent = event => ({
     payload: event
 })
 
-// export const loadEventDetails = eventId => ({
-//     type: LOAD_EVENT_DETAILS,
-//     payload: eventId
-// })
+export const clearEventsState = () => ({
+    type: CLEAR_EVENTS_STATE
+})
 
+export const deleteEvent = eventId => ({
+    type: DELETE_EVENT,
+    payload: eventId
+})
 
 // thunk action creators
 export const fetchEventsThunk = () => async dispatch => {
@@ -49,16 +53,6 @@ export const fetchGroupEventsThunk = groupId => async dispatch => {
     }
 }
 
-// export const fetchEventDetailsThunk = eventId => async dispatch => {
-//     try {
-//         const res = await csrfFetch(`/api/events/${eventId}`)
-//         const event = await res.json()
-//         dispatch(loadEventDetails(event))
-//     } catch {
-//         return 'event details thunk error to be refactored'
-//     }
-// }
-
 export const createEventThunk = (groupId, event) => async dispatch => {
     try {
         const res = await csrfFetch(`/api/groups/${groupId}/events`, {
@@ -76,6 +70,25 @@ export const createEventThunk = (groupId, event) => async dispatch => {
         }
     } catch {
         return 'groups thunk error to be refactored'
+    }
+}
+
+export const deleteGroupThunk = eventId => async dispatch => {
+    try {
+        const res = await csrfFetch(`/api/events/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (res.ok) {
+            const deleteConfirm = await res.json()
+            dispatch(deleteEvent(eventId))
+            return deleteConfirm
+        }
+    } catch {
+        return 'delete group thunk needs to be refactored'
     }
 }
 
@@ -97,16 +110,17 @@ const eventReducer = (state = {}, action) => {
         }
         case CREATE_EVENT: {
             const newEventState = { ...state }
-
-            console.log(action.payload)
             newEventState[action.payload.id] = action.payload
             return newEventState
         }
-        // case LOAD_EVENT_DETAILS: {
-        //     const newEventState = { ...state }
-        //     newEventState[action.payload.id] = { ...state[action.payload.id], ...action.payload }
-        //     return newEventState
-        // }
+        case CLEAR_EVENTS_STATE: {
+            return {}
+        }
+        case DELETE_EVENT: {
+            const newEventState = { ...state }
+            delete newEventState[action.payload]
+            return newEventState
+        }
         default:
             return state;
     }

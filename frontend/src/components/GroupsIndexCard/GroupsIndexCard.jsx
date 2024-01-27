@@ -23,7 +23,7 @@ export function GroupsIndexCard({ group }) {
 
     return (
         <Link to={groupDetailsLink} className='group-page-group-card-link'>
-            <div className="group-page-group-card">
+            <div className="group-page-group-card" title={group?.name}>
                 <img className="group-page-preview-image" src={previewImage} alt="Group preview image" />
 
                 <div className='group-page-group-card-info'>

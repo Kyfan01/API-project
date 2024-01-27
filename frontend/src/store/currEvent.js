@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf'
 // action types
 export const LOAD_EVENT_DETAILS = 'events/loadEventDetails'
 export const CREATE_EVENT_IMAGE = 'groups/createEventImage'
+export const CLEAR_CURRENT_EVENT = 'groups/clearCurrentEvent'
 
 // action creators
 export const loadEventDetails = event => ({
@@ -13,6 +14,10 @@ export const loadEventDetails = event => ({
 export const createEventImage = (image) => ({
     type: CREATE_EVENT_IMAGE,
     payload: image
+})
+
+export const clearCurrEvent = () => ({
+    type: CLEAR_CURRENT_EVENT
 })
 
 // thunk action creators
@@ -58,6 +63,9 @@ const currEventReducer = (state = {}, action) => {
             const newCurrEventState = { ...state }
             newCurrEventState.EventImages = [newCurrEventState.EventImages, action.payload.eventImage]
             return newCurrEventState
+        }
+        case CLEAR_CURRENT_EVENT: {
+            return {}
         }
         default:
             return state;

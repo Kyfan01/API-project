@@ -4,6 +4,7 @@ import { csrfFetch } from './csrf'
 export const LOAD_GROUPS = 'groups/loadGroups'
 // export const LOAD_GROUP_DETAILS = 'groups/loadGroupDetails'
 export const CREATE_GROUP = 'groups/createGroup'
+export const DELETE_GROUP = 'group/deleteGroup'
 
 
 // action creators
@@ -22,6 +23,10 @@ export const createGroup = group => ({
     payload: group
 })
 
+export const deleteGroup = groupId => ({
+    type: DELETE_GROUP,
+    payload: groupId
+})
 
 
 // thunk action creators
@@ -67,7 +72,24 @@ export const createGroupThunk = (group) => async dispatch => {
     }
 }
 
+export const deleteGroupThunk = groupId => async dispatch => {
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
 
+        if (res.ok) {
+            const deleteConfirm = await res.json()
+            dispatch(deleteGroup(groupId))
+            return deleteConfirm
+        }
+    } catch {
+        return 'delete group thunk needs to be refactored'
+    }
+}
 
 const groupReducer = (state = {}, action) => {
     switch (action.type) {
@@ -86,6 +108,11 @@ const groupReducer = (state = {}, action) => {
         case CREATE_GROUP: {
             const newGroupState = { ...state }
             newGroupState[action.payload.id] = action.payload
+            return newGroupState
+        }
+        case DELETE_GROUP: {
+            const newGroupState = { ...state }
+            delete newGroupState[action.payload]
             return newGroupState
         }
 
