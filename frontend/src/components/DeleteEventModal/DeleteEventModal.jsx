@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCurrEvent } from '../../store/currEvent';
 import { useModal } from '../../context/Modal';
-import deleteEventThunk from './'
+import { deleteEventThunk } from '../../store/event';
 
 export function DeleteEventModal({ event }) {
     const { closeModal } = useModal();
@@ -14,7 +14,7 @@ export function DeleteEventModal({ event }) {
         e.preventDefault()
         dispatch(deleteEventThunk(event.id))
             .then(() => {
-                dispatch(clearCurrEvent()) //removes group from currGroup state
+                dispatch(clearCurrEvent()) //removes event from currGroup state
                 closeModal()
                 navigate('/events')
             })

@@ -67,7 +67,6 @@ export function GroupDetailsPage() {
                         <OpenModalButton className={`group-details-delete-button ${hideOrgButton}`} buttonText='Delete' modalComponent={<DeleteGroupModal group={group} />} />
                     </div>
                 </div>
-
             </div>
 
             <div className='group-details-lower-container'>

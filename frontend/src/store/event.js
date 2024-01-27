@@ -73,7 +73,7 @@ export const createEventThunk = (groupId, event) => async dispatch => {
     }
 }
 
-export const deleteGroupThunk = eventId => async dispatch => {
+export const deleteEventThunk = eventId => async dispatch => {
     try {
         const res = await csrfFetch(`/api/events/${eventId}`, {
             method: 'DELETE',
@@ -88,7 +88,7 @@ export const deleteGroupThunk = eventId => async dispatch => {
             return deleteConfirm
         }
     } catch {
-        return 'delete group thunk needs to be refactored'
+        return 'delete event thunk needs to be refactored'
     }
 }
 
