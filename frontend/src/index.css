@@ -4,6 +4,10 @@ body {
     height: 100%;
 }
 
+#root {
+    height: 100%;
+}
+
 #site-body {
     height: 100%;
     margin: 0;
@@ -11,4 +15,8 @@ body {
 
 * {
     font-family: 'Outfit', sans-serif;
+}
+
+p {
+    margin: 1%;
 }

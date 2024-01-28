@@ -16,7 +16,7 @@ export function DeleteEventModal({ event }) {
             .then(() => {
                 dispatch(clearCurrEvent()) //removes event from currGroup state
                 closeModal()
-                navigate('/events')
+                navigate(`/groups/${event.groupId}`)
             })
     }
 

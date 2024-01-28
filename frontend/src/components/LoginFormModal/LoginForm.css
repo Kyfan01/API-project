@@ -1,0 +1,45 @@
+.login-modal-container {
+    display: flex;
+    flex-direction: column;
+    height: 35vh;
+    width: 40vw;
+    align-items: center;
+    overflow: auto;
+    max-width: 800px;
+    max-height: 350px;
+}
+
+.login-modal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 85%;
+    max-width: 85%;
+}
+
+.login-modal-input-container {
+    margin: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.login-modal-input {
+    width: 95%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.login-modal-button {
+    background-color: #8E71A2;
+    color: black;
+    width: 95%;
+    height: 40px;
+    margin-top: 15px;
+}
+
+.login-modal-button:disabled {
+    background-color: white;
+    color: gray;
+    cursor: default;
+}

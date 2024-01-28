@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
   return (
     <div className="navbar">
       <LogoButton />
-      <ul className="nav-buttons">
+      <div className="nav-buttons">
         <li>
           <NavLink to="/groups/new" className={hideCreateGroup}>Start a new group</NavLink>
         </li>
@@ -24,7 +24,7 @@ function Navigation({ isLoaded }) {
             <ProfileButton className="profile-button" user={sessionUser} />
           </li>
         )}
-      </ul>
+      </div>
     </div>
   );
 }

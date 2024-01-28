@@ -4,6 +4,9 @@ import highFive from '../../../../images/high-five.png'
 import bballCourt from '../../../../images/bball-court.png'
 import basketballPlayers from '../../../../images/basketball-players.jpg'
 import { useSelector } from 'react-redux';
+import SignupFormModal from '../SignupFormModal';
+import { useModal } from '../../context/Modal';
+import OpenModalButton from '../OpenModalButton';
 
 function LandingPage() {
     const user = useSelector(state => state.session.user)
@@ -33,7 +36,7 @@ function LandingPage() {
             </div>
 
             <div className='landing-page-join-button-container'>
-                <button id='landing-page-join-button'>Join Ballr</button>
+                {!isLoggedIn && <OpenModalButton buttonText="Join Ballr" modalComponent={<SignupFormModal />} />}
             </div>
         </div>
 
