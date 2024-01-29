@@ -29,7 +29,7 @@ export function GroupsIndexCard({ group }) {
                     <h2 className='group-page-group-card-name'>{group?.name}</h2>
                     <h4 className='group-page-group-card-location'>{group?.city}, {group?.state}</h4>
                     <p className='group-page-group-card-description'>{group?.about}</p>
-                    <p className="group-page-group-card-event-info">{eventCounter} · {privateStatus}</p>
+                    <p className="group-page-group-card-event-info">{eventCounter} &nbsp; · &nbsp; {privateStatus}</p>
                 </div>
             </div>
         </Link>

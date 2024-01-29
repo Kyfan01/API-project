@@ -19,3 +19,11 @@
     width: 150px;
     height: 40px;
 }
+
+.delete-modal-button-delete {
+    background-color: red;
+}
+
+.delete-modal-button-cancel {
+    background-color: darkgray
+}

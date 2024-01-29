@@ -79,7 +79,7 @@ export function CreateGroupForm() {
             <form onSubmit={handleSubmit}>
                 <div className='create-group-input-section'>
                     <h2>{"Set your group's location"}</h2>
-                    <p>{"Ballr groups meet locally, in person, and online. We'll connect you with people in your area"}</p>
+                    <p>{"Ballr groups meet locally, in person, and online. We'll connect you with people in your area."}</p>
                     <label>
                         <input type="text" placeholder='City, STATE' value={cityState} onChange={e => setCityState(e.target.value)} />
                     </label>
@@ -112,7 +112,7 @@ export function CreateGroupForm() {
                         <li>{"What will you do at your events?"}</li>
                     </ol>
                     <label >
-                        <textarea type="text" placeholder='Please write at least 50 characters' value={about} onChange={e => setAbout(e.target.value)} />
+                        <textarea type="text" placeholder='Please write at least 30 characters' value={about} onChange={e => setAbout(e.target.value)} />
                     </label>
                     <div>
                         {'about' in validationErr && (<span className='validation-error'>{validationErr.about}</span>)}

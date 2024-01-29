@@ -9,7 +9,6 @@ export function LandingPageCard({ imageUrl, alt, path, cardTitle, cardText, isCa
     return (
         <div className="landing-page-card-container">
             <div className="landing-page-card">
-
                 <Link to={path} className={cardLinkClass}>
                     <div className="landing-page-img-container">
                         <img className="landing-page-card-img" src={imageUrl} alt={alt} />

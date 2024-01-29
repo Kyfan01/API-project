@@ -64,12 +64,15 @@
 }
 
 .group-details-lower-container {
-    margin-left: 20px;
+    border-top: black 3px solid;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.group-details-events-container {
-    margin-left: 20px;
+.group-details-events-container>div>h2 {
+    padding-top: 20px;
 }
+
 
 .group-details-create-event-button,
 .group-details-update-button,
@@ -84,6 +87,7 @@
 .group-details-buttons {
     justify-self: flex-end;
 }
+
 
 .hidden {
     display: none;

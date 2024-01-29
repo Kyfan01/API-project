@@ -82,7 +82,7 @@ export function EventDetailsPage() {
                         </div>
                         <div className='event-details-price'>
                             <i className="fa-solid fa-circle-dollar-to-slot"></i>
-                            <p>$ {event?.price}</p>
+                            <p>$ {event?.price === 0 ? 'FREE' : event?.price}</p>
 
                         </div>
 
@@ -100,7 +100,7 @@ export function EventDetailsPage() {
             </div>
 
             <div className='event-details-lower-container'>
-                <h2>Details</h2>
+                <h2>Description</h2>
                 <p>{event?.description}</p>
             </div>
         </div>

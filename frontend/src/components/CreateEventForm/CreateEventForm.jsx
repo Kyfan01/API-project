@@ -186,7 +186,7 @@ export function CreateEventForm() {
                     <div className='create-event-input-section'>
                         <h2>{'Please describe your event'}</h2>
                         <label >
-                            <textarea id="about" type="text" placeholder='Please write at least 30 characters' value={description} onChange={e => setDescription(e.target.value)} />
+                            <textarea id="about" type="text" placeholder='Please include at least 30 characters' value={description} onChange={e => setDescription(e.target.value)} />
                         </label>
                         <div>
                             {'description' in validationErr && (<span className='validation-error'>{validationErr.description}</span>)}

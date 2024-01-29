@@ -4,8 +4,7 @@
     flex-wrap: wrap;
     margin: 0;
     height: 92vh;
-    padding: 20px;
-
+    padding: 2% 10% 5% 10%;
 }
 
 .landing-page-intro-section {
@@ -19,7 +18,7 @@
 
 .landing-page-intro-img-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     flex: 1 1 50%;
     align-items: center;
 }

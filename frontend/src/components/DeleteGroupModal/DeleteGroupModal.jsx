@@ -32,8 +32,8 @@ export function DeleteGroupModal({ group }) {
             <h1>Confirm Delete</h1>
             <p>Are you sure you want to remove this group?</p>
             <div className='delete-modal-button-container'>
-                <button onClick={handleDelete}>Yes (Delete Group)</button>
-                <button onClick={handleCancel}>No (Keep Group)</button>
+                <button className='delete-modal-button-delete' onClick={handleDelete}>Yes (Delete Group)</button>
+                <button className='delete-modal-button-cancel' onClick={handleCancel}>No (Keep Group)</button>
             </div>
         </div>
     )
