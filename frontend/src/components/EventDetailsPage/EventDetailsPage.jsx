@@ -56,7 +56,7 @@ export function EventDetailsPage() {
                 </div>
 
                 <div className='event-details-upper-right'>
-                    <NavLink className='event-details-group-preview-link' to={`/groups/${group.id}`}>
+                    <NavLink className='event-details-group-preview-link' to={`/groups/${group?.id}`}>
                         <div className='event-details-group-preview-container'>
                             <img className='event-details-group-preview-image' src={groupImageUrl} alt="Preview image of group" />
                             <div className='event-details-group-preview-info'>
