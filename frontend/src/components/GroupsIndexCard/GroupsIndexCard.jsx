@@ -25,9 +25,7 @@ export function GroupsIndexCard({ group }) {
         <Link to={groupDetailsLink} className='group-page-group-card-link'>
             <div className="group-page-group-card" title={group?.name}>
                 <img className="group-page-preview-image" src={previewImage} alt="Group preview image" />
-
                 <div className='group-page-group-card-info'>
-
                     <h2 className='group-page-group-card-name'>{group?.name}</h2>
                     <h4 className='group-page-group-card-location'>{group?.city}, {group?.state}</h4>
                     <p className='group-page-group-card-description'>{group?.about}</p>

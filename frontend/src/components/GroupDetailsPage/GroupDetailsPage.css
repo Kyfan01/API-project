@@ -55,6 +55,14 @@
     box-shadow: 2px 2px;
 }
 
+.group-details-lower-container {
+    margin-left: 20px;
+}
+
+.group-details-events-container {
+    margin-left: 20px;
+}
+
 .hidden {
     display: none;
 }

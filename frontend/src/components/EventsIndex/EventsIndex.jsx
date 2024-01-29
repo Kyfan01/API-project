@@ -29,20 +29,23 @@ export function EventsIndex() {
                 <NavLink to="/events" id='event-index-event-header'>Events</NavLink>
                 <NavLink to="/groups" id='event-index-group-header'>Groups</NavLink>
             </div>
-            <h1>Events in Ballr</h1>
-
-            <div>
-                <div className='event-index-card-container'>
-                    <div>
-                        <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
-                        {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
-                    </div>
-                    <div>
-                        <h3>Past Events ({pastEventsArr.length})</h3>
-                        {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+            <div className='events-index-container'>
+                <h1>Events in Ballr</h1>
+                <div>
+                    <div className='event-index-card-container'>
+                        <div>
+                            <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
+                            {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                        </div>
+                        <div>
+                            <h3>Past Events ({pastEventsArr.length})</h3>
+                            {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                        </div>
                     </div>
                 </div>
+
             </div>
+
 
         </div>
     )

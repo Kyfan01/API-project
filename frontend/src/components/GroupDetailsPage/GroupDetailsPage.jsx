@@ -84,7 +84,7 @@ export function GroupDetailsPage() {
                     <p>{group?.about}</p>
                 </div>
             </div>
-            <div>
+            <div className='group-details-events-container'>
                 <div>
                     <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
                     {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}

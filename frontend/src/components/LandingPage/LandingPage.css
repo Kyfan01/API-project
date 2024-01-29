@@ -62,4 +62,5 @@
 
 .landing-page-all-cards-container {
     display: flex;
+    width: 100%;
 }

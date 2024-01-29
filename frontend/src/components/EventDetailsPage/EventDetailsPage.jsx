@@ -41,7 +41,7 @@ export function EventDetailsPage() {
                     <h1>{event?.name}</h1>
                     <p>Hosted by {organizer?.firstName} {organizer?.lastName}</p>
                     <button className={`event-details-update-button ${hideButton}`} onClick={() => alert('Feature coming soon')}>Update</button>
-                    <OpenModalButton className={`event-details-delete-button ${hideButton}`} buttonText='Delete' modalComponent={<DeleteEventModal event={event} />} />
+                    {isOrganizer && <OpenModalButton className={`event-details-delete-button ${hideButton}`} buttonText='Delete' modalComponent={<DeleteEventModal event={event} />} />}
                 </div>
                 <div className='event-details-img-container'>
                     <img className='event-details-event-image' src={eventImageUrl} alt="Image of the event" />

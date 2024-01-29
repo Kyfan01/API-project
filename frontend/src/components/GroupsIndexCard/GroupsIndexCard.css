@@ -5,10 +5,16 @@
 
 .group-page-group-card {
     display: flex;
-    max-width: 100%;
+    width: 100%;
+    height: 20%;
     max-height: 20%;
     border-bottom: black 1px solid;
-    margin-top: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.group-page-group-card-info>p {
+    margin: 5px 0 5px 15px;
 }
 
 
@@ -20,28 +26,21 @@
 .group-page-group-card-info {
     display: flex;
     flex-direction: column;
+
 }
 
 .group-page-group-card-name {
-    margin-top: 0px;
-    margin-left: 15px;
-    margin-bottom: 10px;
     color: black;
 }
 
 .group-page-group-card-location {
     color: gray;
-    margin-left: 15px;
-    margin-top: 0px;
-    margin-bottom: 10px;
-}
-
-.group-page-group-card-description {
-    margin-left: 15px;
-    margin-bottom: 0px;
-
 }
 
 .group-page-group-card-event-info {
     margin-left: 15px;
+}
+
+.group-page-group-card-info>* {
+    margin: 5px 0 5px 0;
 }

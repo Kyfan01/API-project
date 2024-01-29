@@ -21,12 +21,15 @@ export function GroupIndex() {
                 <NavLink to="/events" id='group-index-event-header'>Events</NavLink>
                 <NavLink to="/groups" id='group-index-group-header'>Groups</NavLink>
             </div>
-            <h1>Groups in Ballr</h1>
+            <div className='group-index-container'>
+                <h1>Groups in Ballr</h1>
 
-            <div>
-                <ul className='group-index-cards-container'>
-                    {groups.map(group => <GroupsIndexCard group={group} key={group.id} />)}
-                </ul>
+                <div>
+                    <div className='group-index-cards-container'>
+                        {groups.map(group => <GroupsIndexCard group={group} key={group.id} />)}
+                    </div>
+                </div>
+
             </div>
 
         </div>
