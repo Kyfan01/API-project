@@ -5,8 +5,7 @@
 .event-details-upper-container {
     display: flex;
     max-height: 50%;
-    height: 50%;
-
+    height: 50%
 }
 
 .event-details-upper-right {
@@ -14,11 +13,12 @@
 }
 
 .event-details-event-image {
-    max-width: 50%;
-    max-height: 50%;
+    max-width: 90%;
+    max-height: 90%;
     width: auto;
     height: auto;
-    margin: 50px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .event-details-img-container {

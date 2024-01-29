@@ -1,0 +1,21 @@
+.delete-modal-container {
+    display: flex;
+    flex-direction: column;
+    height: 20vh;
+    width: 30vw;
+    overflow: auto;
+    max-width: 800px;
+    max-height: 350px;
+    padding: 40px
+}
+
+.delete-modal-button-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.delete-modal-button-container>button {
+    width: 150px;
+    height: 40px;
+}

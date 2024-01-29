@@ -30,7 +30,7 @@ const validateGroup = body => {
     if (!about) errObj.about = "About is required"
 
     if (name && name.length > 60) errObj.name = "Name must be 60 characters or less"
-    if (about && about.length < 50) errObj.about = "About must be 50 characters or more"
+    if (about && about.length < 30) errObj.about = "About must be 30 characters or more"
     if (type && !typeArr.includes(type)) errObj.type = "Type must be 'Online' or 'In person'"
     if (private && typeof private !== 'boolean') errObj.private = "Private must be a boolean"
 

@@ -5,6 +5,15 @@
     flex-direction: column;
     flex-wrap: wrap;
     flex: 1 1 33%;
+    height: 100%;
+}
+
+.landing-page-card {
+    background-color: var(--purple);
+    height: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
 }
 
 .landing-page-card-link {
@@ -20,7 +29,8 @@
 
 .landing-page-card-img {
     display: flex;
-    max-width: 50%;
+    max-width: 200px;
+    max-height: 200px
 }
 
 .landing-page-card-title {

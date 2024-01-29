@@ -23,7 +23,8 @@ module.exports = {
     await EventImage.bulkCreate([
       {
         eventId: 1,
-        url: 'event1 url'
+        url: 'https://cdn.nba.com/manage/2024/01/2024-all-star-captains.jpg?w=735&h=413',
+        preview: true
       },
       {
         eventId: 2,
@@ -31,7 +32,7 @@ module.exports = {
       },
       {
         eventId: 3,
-        url: 'event3 url',
+        url: 'https://static.nike.com/a/images/f_auto/dpr_1.0,cs_srgb/w_1824,c_limit/08cc70ef-be31-48a7-b4e8-e23095d2342e/5-benefits-of-playing-basketball-according-to-experts.jpg',
         preview: true
       },
       {
@@ -40,7 +41,7 @@ module.exports = {
       },
       {
         eventId: 5,
-        url: 'event5 url',
+        url: 'https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fbac2bfe0-2638-4d21-a44f-d51d5acd580f_1980x1320.jpeg',
         preview: true
       }
     ])

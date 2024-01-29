@@ -77,10 +77,10 @@ export function UpdateGroupForm() {
     }
 
     return (
-        <div>
+        <div className='update-group-page'>
             <h1>Update your Group</h1>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className='update-group-input-section'>
                     <h2>{"Set your group's location"}</h2>
                     <p>{"Ballr groups meet locally, in person, and online. We'll connect you with people in your area"}</p>
                     <label>
@@ -95,7 +95,7 @@ export function UpdateGroupForm() {
                     </div>
                 </div>
 
-                <div>
+                <div className='update-group-input-section'>
                     <h2>{"What will your group's name be?"}</h2>
                     <p>{"Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind."}</p>
                     <label>
@@ -107,7 +107,7 @@ export function UpdateGroupForm() {
                     </div>
                 </div>
 
-                <div>
+                <div className='update-group-input-section'>
                     <h2>{"Describe the purpose of your group"}</h2>
                     <p>{"People will see this when we promote your group, but you'll be able to add to it later, too."}</p>
                     <ol>
@@ -135,7 +135,7 @@ export function UpdateGroupForm() {
                         </div>
                     </div>
 
-                    <div>
+                    <div className='update-group-input-section'>
                         <h2>{"Is this group private or public?"}</h2>
                         <select name="isPrivate" value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
                             <option value={true}>Private</option>
@@ -147,7 +147,7 @@ export function UpdateGroupForm() {
                     </div>
 
                 </div>
-                <div>
+                <div className='update-group-button-container'>
                     <button onSubmit={handleSubmit}>Update Group</button>
                 </div>
             </form>

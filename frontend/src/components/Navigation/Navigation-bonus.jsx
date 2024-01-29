@@ -11,10 +11,10 @@ function Navigation({ isLoaded }) {
 
   return (
     <div className="navbar">
-      <LogoButton />
+      <LogoButton className='logo-button' />
       <div className="nav-buttons">
         <li>
-          <NavLink to="/groups/new" className={hideCreateGroup}>Start a new group</NavLink>
+          <NavLink to="/groups/new" className={`${hideCreateGroup} new-group-navigation-navlink`}>Start a new group</NavLink>
         </li>
         {/* <li>
           <NavLink to="/">Home</NavLink>

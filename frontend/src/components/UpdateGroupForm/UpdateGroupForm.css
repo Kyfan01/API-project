@@ -1,0 +1,22 @@
+.update-group-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 12% 20px 12%;
+}
+
+.update-group-input-section {
+    padding-bottom: 20px;
+    border-bottom: black 2px solid;
+}
+
+.update-group-button-container {
+    margin-top: 20px;
+}
+
+.update-group-button-container>button {
+    background-color: var(--purple);
+    height: 40px;
+    width: 150px;
+    font-size: 1em;
+}

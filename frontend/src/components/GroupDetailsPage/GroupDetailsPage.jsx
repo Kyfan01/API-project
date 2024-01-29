@@ -55,13 +55,12 @@ export function GroupDetailsPage() {
         <div className='group-details-page'>
             <NavLink className='group-details-breadcrumb' to='/groups'>{'< Groups'}</NavLink>
             <div className='group-details-upper-container'>
-                <div className='group-details-img-side'>
-                    <div className='group-details-img-container'>
-                        <img className='group-details-group-image' src={groupImageUrl} alt="Image of the group" />
-                    </div>
+
+                <div className='group-details-img-container'>
+                    <img className='group-details-group-image' src={groupImageUrl} alt="Image of the group" />
                 </div>
                 <div className='group-details-upper-info'>
-                    <div>
+                    <div className='group-details-info-block'>
                         <h1>{group?.name}</h1>
                         <p>{group?.city}, {group?.state}</p>
                         <p>{eventCounter}&nbsp; · &nbsp;{privateStatus}</p>

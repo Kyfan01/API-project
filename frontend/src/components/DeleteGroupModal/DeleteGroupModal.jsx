@@ -28,11 +28,13 @@ export function DeleteGroupModal({ group }) {
     }
 
     return (
-        <div>
+        <div className='delete-modal-container'>
             <h1>Confirm Delete</h1>
             <p>Are you sure you want to remove this group?</p>
-            <button onClick={handleDelete}>Yes (Delete Group)</button>
-            <button onClick={handleCancel}>No (Keep Group)</button>
+            <div className='delete-modal-button-container'>
+                <button onClick={handleDelete}>Yes (Delete Group)</button>
+                <button onClick={handleCancel}>No (Keep Group)</button>
+            </div>
         </div>
     )
 }

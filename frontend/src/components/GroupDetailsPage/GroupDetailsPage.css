@@ -11,29 +11,24 @@
 
 .group-details-upper-container {
     display: flex;
-    height: 40%;
-    width: 100%;
+    max-height: 50%;
+    height: 50%
 }
 
 .group-details-group-image {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90%;
+    max-height: 90%;
     width: auto;
     height: auto;
-    display: block;
-}
-
-.group-details-img-side {
-    display: flex;
-    justify-content: flex-end;
-    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .group-details-img-container {
-    height: 100%;
     display: flex;
-    width: 75%;
-    margin-right: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
 }
 
 .group-details-upper-info {
@@ -44,7 +39,17 @@
     justify-content: space-between;
 }
 
-.group-details-upper-info>h1 {
+.group-details-info-block {
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: var(--purple);
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.group-details-info-block>h1 {
     overflow-wrap: break-word;
     margin-top: 0;
 }
@@ -52,9 +57,10 @@
 .group-details-join-group-button-container>button {
     background-color: red;
     width: 50%;
-    justify-content: space-between;
-    height: 30px;
+    height: 60px;
     box-shadow: 2px 2px;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
 .group-details-lower-container {
@@ -67,11 +73,12 @@
 
 .group-details-create-event-button,
 .group-details-update-button,
-.modal-delete-button,
+.modal-button,
 .event-details-update-button {
     background-color: darkgray;
     width: 100px;
     margin-right: 10px;
+    height: 40px;
 }
 
 .group-details-buttons {

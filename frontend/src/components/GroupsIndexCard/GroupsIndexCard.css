@@ -13,10 +13,11 @@
     box-sizing: border-box;
 }
 
-.group-page-group-card-info>p {
+.group-page-group-card-info>p,
+.group-page-group-card-info>h4,
+.group-page-group-card-info>h2 {
     margin: 5px 0 5px 15px;
 }
-
 
 .group-page-preview-image {
     max-height: 150px;
@@ -41,10 +42,6 @@
 .group-page-group-card-location {
     color: gray;
     overflow-wrap: break-word;
-}
-
-.group-page-group-card-event-info {
-    margin-left: 15px;
 }
 
 .group-page-group-card-info>* {

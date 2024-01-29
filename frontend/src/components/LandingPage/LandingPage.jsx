@@ -3,6 +3,7 @@ import { LandingPageCard } from '../LandingPageCard/LandingPageCard';
 import highFive from '../../../../images/high-five.png'
 import bballCourt from '../../../../images/bball-court.png'
 import basketballPlayers from '../../../../images/basketball-players.jpg'
+import landingPageImg from '../../../../images/landing-page-img.jpg'
 import { useSelector } from 'react-redux';
 import SignupFormModal from '../SignupFormModal';
 import OpenModalButton from '../OpenModalButton';
@@ -20,7 +21,7 @@ function LandingPage() {
                 <p>Whatever your skill-level, from semi-pro to average joe, there are thousands* of people finding games and players on Ballr. Events are happening every day. Sign up to join the fun!</p>
             </div>
             <div className="landing-page-intro-img-container">
-                <img className="landing-page-intro-img" src="https://thumbs.dreamstime.com/z/colorful-illustration-basketball-players-colourful-group-123447718.jpg?ct=jpeg" alt="drawing of players playing basketball" />
+                <img className="landing-page-intro-img" src={landingPageImg} alt="drawing of players playing basketball" />
             </div>
 
             <div className="landing-page-intro-subtitle-container">

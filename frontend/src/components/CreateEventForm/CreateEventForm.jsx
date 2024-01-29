@@ -92,14 +92,14 @@ export function CreateEventForm() {
 
 
     return (
-        <div>
+        <div className='create-event-page'>
             <h1>{`Create a new event for ${group?.name}`}</h1>
             <form onSubmit={handleSubmit}>
 
-                <div>
+                <div className='create-event-input-section'>
                     <h2>{"What is the name of your event?"}</h2>
                     <label>
-                        <input type="text" placeholder='Event Name' value={name} onChange={e => setName(e.target.value)} />
+                        <input id='name' type="text" placeholder='Event Name' value={name} onChange={e => setName(e.target.value)} />
                     </label>
                     <div>
                         {'name' in validationErr && (<span className='validation-error'>{validationErr.name}</span>)}
@@ -109,7 +109,7 @@ export function CreateEventForm() {
                 <div>
                     <div>
                         <h2>{"Is this an in-person or online group?"}</h2>
-                        <select name="type" value={type} onChange={e => setType(e.target.value)}>
+                        <select id='type' name="type" value={type} onChange={e => setType(e.target.value)}>
                             <option value="" disabled>(select one)</option>
                             <option value="In person">In person</option>
                             <option value="Online">Online</option>
@@ -119,9 +119,9 @@ export function CreateEventForm() {
                         </div>
                     </div>
 
-                    <div>
+                    <div className='create-event-input-section'>
                         <h2>{"Is this group private or public?"}</h2>
-                        <select name="isPrivate" value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+                        <select id='private' name="isPrivate" value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
                             <option value="" disabled>(select one)</option>
                             <option value={true}>Private</option>
                             <option value={false}>Public</option>
@@ -134,17 +134,17 @@ export function CreateEventForm() {
                     <div>
                         <h2>{"What is the price for your event?"}</h2>
                         <label>
-                            <input type="text" placeholder='0' value={price} onChange={e => setPrice(e.target.value)} />
+                            <input id='price' type="text" placeholder='0' value={price} onChange={e => setPrice(e.target.value)} />
                         </label>
                         <div>
                             {'price' in validationErr && (<span className='validation-error'>{validationErr.price}</span>)}
                         </div>
                     </div>
 
-                    <div>
+                    <div className='create-event-input-section'>
                         <h2>{"What is the capacity for your event?"}</h2>
                         <label>
-                            <input type="text" placeholder='0' min={0} value={capacity} onChange={e => setCapacity(e.target.value)} />
+                            <input id='capacity' type="text" placeholder='0' min={0} value={capacity} onChange={e => setCapacity(e.target.value)} />
                         </label>
                         <div>
                             {'capacity' in validationErr && (<span className='validation-error'>{validationErr.capacity}</span>)}
@@ -154,37 +154,37 @@ export function CreateEventForm() {
                     <div>
                         <h2>{"When does your event start?"}</h2>
                         <label>
-                            <input type="datetime-local" placeholder='MM/DD/YYYY, HH/mm AM' value={startDate} onChange={e => setStartDate(e.target.value)} />
+                            <input id='startDate' type="datetime-local" placeholder='MM/DD/YYYY, HH/mm AM' value={startDate} onChange={e => setStartDate(e.target.value)} />
                         </label>
                         <div>
                             {'startDate' in validationErr && (<span className='validation-error'>{validationErr.startDate}</span>)}
                         </div>
                     </div>
 
-                    <div>
+                    <div className='create-event-input-section'>
                         <h2>{"When does your event end?"}</h2>
                         <label>
-                            <input type="datetime-local" placeholder='MM/DD/YYYY, HH/mm PM' value={endDate} onChange={e => setEndDate(e.target.value)} />
+                            <input id='endDate' type="datetime-local" placeholder='MM/DD/YYYY, HH/mm PM' value={endDate} onChange={e => setEndDate(e.target.value)} />
                         </label>
                         <div>
                             {'endDate' in validationErr && (<span className='validation-error'>{validationErr.endDate}</span>)}
                         </div>
                     </div>
 
-                    <div>
-                        <h2>{"Please add an image url for your event below:"}</h2>
-                        <label htmlFor="">
-                            <input type="text" placeholder='Image Url' value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
+                    <div className='create-event-input-section'>
+                        <h2>{"Please add an image URL for your event below:"}</h2>
+                        <label>
+                            <input id='eventImage' type="text" placeholder='Image Url' value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
                         </label>
                         <div>
                             {'imageUrl' in validationErr && (<span className='validation-error'>{validationErr.imageUrl}</span>)}
                         </div>
                     </div>
 
-                    <div>
+                    <div className='create-event-input-section'>
                         <h2>{'Please describe your event'}</h2>
                         <label >
-                            <textarea type="text" placeholder='Please write at least 30 characters' value={description} onChange={e => setDescription(e.target.value)} />
+                            <textarea id="about" type="text" placeholder='Please write at least 30 characters' value={description} onChange={e => setDescription(e.target.value)} />
                         </label>
                         <div>
                             {'description' in validationErr && (<span className='validation-error'>{validationErr.description}</span>)}
@@ -193,7 +193,7 @@ export function CreateEventForm() {
 
                 </div>
 
-                <div>
+                <div className='create-event-button-container'>
                     <button onSubmit={handleSubmit}>Create event</button>
                 </div>
             </form>

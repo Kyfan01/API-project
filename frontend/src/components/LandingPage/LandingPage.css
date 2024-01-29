@@ -1,10 +1,11 @@
 .landing-page-content {
     display: flex;
-    margin: 10px;
     justify-content: space-between;
     flex-wrap: wrap;
     margin: 0;
-    height: 93vh;
+    height: 92vh;
+    padding: 20px;
+
 }
 
 .landing-page-intro-section {
@@ -31,7 +32,7 @@
 .landing-page-intro-subtitle-container {
     display: flex;
     justify-content: center;
-    flex: 1 1 100%;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
@@ -54,13 +55,19 @@
     flex: 1 1 100%;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
 
 #landing-page-join-button {
     box-shadow: 2px 2px;
+    background-color: teal;
 }
 
 .landing-page-all-cards-container {
     display: flex;
     width: 100%;
+}
+
+#modal-join-button {
+    background-color: teal;
 }

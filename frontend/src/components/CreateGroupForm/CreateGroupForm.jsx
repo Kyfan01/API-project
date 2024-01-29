@@ -33,7 +33,7 @@ export function CreateGroupForm() {
         const imageUrlEnding = imageUrl.split('.').slice(-1)[0]
 
         if (!city) errObj.city = 'City is required'
-        if (!state) errObj.state = 'State is required (separated from city by comma)'
+        if (!state) errObj.state = 'State is required (separated from city by a comma)'
         if (!name) errObj.name = 'Name is required'
         if (name && name.length > 60) errObj.name = 'Name must be 60 characters or less'
         if (!about) errObj.about = "Description is required"
@@ -74,10 +74,10 @@ export function CreateGroupForm() {
     }
 
     return (
-        <div>
+        <div className='create-group-page'>
             <h1>Start a New Group</h1>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className='create-group-input-section'>
                     <h2>{"Set your group's location"}</h2>
                     <p>{"Ballr groups meet locally, in person, and online. We'll connect you with people in your area"}</p>
                     <label>
@@ -92,18 +92,18 @@ export function CreateGroupForm() {
                     </div>
                 </div>
 
-                <div>
+                <div className='create-group-input-section'>
                     <h2>{"What will your group's name be?"}</h2>
                     <p>{"Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind."}</p>
                     <label>
-                        <input type="text" placeholder='What is your group name' value={name} onChange={e => setName(e.target.value)} />
+                        <input type="text" placeholder='What is your group name?' value={name} onChange={e => setName(e.target.value)} />
                     </label>
                     <div>
                         {'name' in validationErr && (<span className='validation-error'>{validationErr.name}</span>)}
                     </div>
                 </div>
 
-                <div>
+                <div className='create-group-input-section'>
                     <h2>{"Describe the purpose of your group"}</h2>
                     <p>{"People will see this when we promote your group, but you'll be able to add to it later, too."}</p>
                     <ol>
@@ -119,7 +119,7 @@ export function CreateGroupForm() {
                     </div>
                 </div>
 
-                <div>
+                <div className='create-group-input-section'>
                     <div>
                         <h2>{"Is this an in-person or online group?"}</h2>
                         <select name="type" value={type} onChange={e => setType(e.target.value)}>
@@ -145,7 +145,7 @@ export function CreateGroupForm() {
                     </div>
                     <div>
 
-                        <h2>{"Please add an image url for your group below:"}</h2>
+                        <h2>{"Please add an image URL for your group below:"}</h2>
                         <label htmlFor="">
                             <input type="text" placeholder='Image Url' value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
                         </label>
@@ -154,7 +154,7 @@ export function CreateGroupForm() {
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className='create-group-button-container'>
                     <button onSubmit={handleSubmit}>Create group</button>
                 </div>
             </form>

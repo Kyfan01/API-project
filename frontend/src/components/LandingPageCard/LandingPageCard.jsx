@@ -8,13 +8,16 @@ export function LandingPageCard({ imageUrl, alt, path, cardTitle, cardText, isCa
     const cardLinkClass = `landing-page-card-link ${isCardDisabled}`
     return (
         <div className="landing-page-card-container">
-            <Link to={path} className={cardLinkClass}>
-                <div className="landing-page-img-container">
-                    <img className="landing-page-card-img" src={imageUrl} alt={alt} />
-                </div>
-                <h3 className={cardTitleClass}>{cardTitle}</h3>
-                <p className={cardTextClass}>{cardText}</p>
-            </Link>
+            <div className="landing-page-card">
+
+                <Link to={path} className={cardLinkClass}>
+                    <div className="landing-page-img-container">
+                        <img className="landing-page-card-img" src={imageUrl} alt={alt} />
+                    </div>
+                    <h3 className={cardTitleClass}>{cardTitle}</h3>
+                    <p className={cardTextClass}>{cardText}</p>
+                </Link>
+            </div>
         </div>
     )
 }
