@@ -44,6 +44,10 @@ export function UpdateGroupForm() {
         setCity(cityState.split(',')[0]?.trim())
         setState(cityState.split(',')[1]?.trim())
 
+        console.log(isPrivate)
+        setIsPrivate(!isPrivate)
+        console.log(isPrivate)
+
         setValidationErr({})
         const errObj = {}
 
@@ -59,13 +63,15 @@ export function UpdateGroupForm() {
             setValidationErr(errObj)
         } else {
             const newGroup = {
-                city,
-                state,
+                city: cityState.split(',')[0]?.trim(),
+                state: cityState.split(',')[1]?.trim(),
                 name,
                 about,
                 type,
                 private: Boolean(isPrivate),
             }
+
+            console.log('new group is ', newGroup)
 
             dispatch(updateGroupThunk(groupId, newGroup))
                 .then(resGroup => {
@@ -84,7 +90,7 @@ export function UpdateGroupForm() {
                     <h2>{"Set your group's location"}</h2>
                     <p>{"Ballr groups meet locally, in person, and online. We'll connect you with people in your area"}</p>
                     <label>
-                        <input type="text" placeholder='City, STATE' value={cityState} onChange={e => setCityState(e.target.value)} />
+                        <input type="text" placeholder='City, STATE' value={cityState || ''} onChange={e => setCityState(e.target.value)} />
                     </label>
 
                     <div>
@@ -116,7 +122,7 @@ export function UpdateGroupForm() {
                         <li>{"What will you do at your events?"}</li>
                     </ol>
                     <label >
-                        <textarea type="text" placeholder='Please write at least 50 characters' value={about} onChange={e => setAbout(e.target.value)} />
+                        <textarea type="text" placeholder='Please write at least 50 characters' value={about || ''} onChange={e => setAbout(e.target.value)} />
                     </label>
                     <div>
                         {'about' in validationErr && (<span className='validation-error'>{validationErr.about}</span>)}
@@ -126,7 +132,7 @@ export function UpdateGroupForm() {
                 <div>
                     <div>
                         <h2>{"Is this an in-person or online group?"}</h2>
-                        <select name="type" value={type} onChange={e => setType(e.target.value)}>
+                        <select name="type" value={type || ''} onChange={e => setType(e.target.value)}>
                             <option value="In person">In person</option>
                             <option value="Online">Online</option>
                         </select>
@@ -137,7 +143,7 @@ export function UpdateGroupForm() {
 
                     <div className='update-group-input-section'>
                         <h2>{"Is this group private or public?"}</h2>
-                        <select name="isPrivate" value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+                        <select name="isPrivate" value={isPrivate || ''} onChange={e => setIsPrivate(e.target.value)}>
                             <option value={true}>Private</option>
                             <option value={false}>Public</option>
                         </select>

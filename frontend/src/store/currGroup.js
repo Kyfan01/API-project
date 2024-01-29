@@ -74,6 +74,7 @@ export const updateGroupThunk = (groupId, group) => async dispatch => {
         if (res.ok) {
             const updatedGroup = await res.json()
             dispatch(updateGroup(updatedGroup))
+            console.log(updatedGroup)
             return updatedGroup
         }
     } catch {
