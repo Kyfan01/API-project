@@ -35,6 +35,7 @@ export function CreateGroupForm() {
         if (!city) errObj.city = 'City is required'
         if (!state) errObj.state = 'State is required (separated from city by comma)'
         if (!name) errObj.name = 'Name is required'
+        if (name && name.length > 60) errObj.name = 'Name must be 60 characters or less'
         if (!about) errObj.about = "Description is required"
         if (about.length < 50) errObj.about = "Description must be at least 50 characters long"
         if (type === "") errObj.type = "Group Type is required"

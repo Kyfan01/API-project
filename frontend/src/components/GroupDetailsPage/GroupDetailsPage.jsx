@@ -50,21 +50,26 @@ export function GroupDetailsPage() {
 
     return (
         <div className='group-details-page'>
-            <NavLink to='/groups'>{'< Groups'}</NavLink>
+            <NavLink className='group-details-breadcrumb' to='/groups'>{'< Groups'}</NavLink>
             <div className='group-details-upper-container'>
-                <div className='group-details-img-container'>
-                    <img className='group-details-group-image' src={groupImageUrl} alt="Image of the group" />
+                <div className='group-details-img-side'>
+                    <div className='group-details-img-container'>
+                        <img className='group-details-group-image' src={groupImageUrl} alt="Image of the group" />
+                    </div>
                 </div>
                 <div className='group-details-upper-info'>
                     <h1>{group?.name}</h1>
                     <p>{group?.city}, {group?.state}</p>
                     <p>{eventCounter} · {privateStatus}</p>
                     <p>Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
-                    <button className={`group-details-join-group-button ${hideJoinButton}`} onClick={() => alert('Feature coming soon')}>Join this Group</button>
+                    <div className='group-details-join-group-button-container'>
+                        {hideJoinButton !== 'hidden' && <button onClick={() => alert('Feature coming soon')}>Join this Group</button>}
+
+                    </div>
                     <div>
                         <button className={`group-details-create-event-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create event</button>
                         <button className={`group-details-update-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/update`)}>Update</button>
-                        <OpenModalButton className={`group-details-delete-button ${hideOrgButton}`} buttonText='Delete' modalComponent={<DeleteGroupModal group={group} />} />
+                        {isOrganizer && <OpenModalButton className={`group-details-delete-button ${hideOrgButton}`} buttonText='Delete' modalComponent={<DeleteGroupModal group={group} />} />}
                     </div>
                 </div>
             </div>

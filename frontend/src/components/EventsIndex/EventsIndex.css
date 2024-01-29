@@ -6,9 +6,11 @@
 
 #event-index-event-header {
     color: #00a4a9;
+    font-size: 2em;
 }
 
 #event-index-group-header {
     color: gray;
     text-decoration: none;
+    font-size: 2em;
 }

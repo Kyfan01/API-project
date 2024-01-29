@@ -5,7 +5,6 @@ import bballCourt from '../../../../images/bball-court.png'
 import basketballPlayers from '../../../../images/basketball-players.jpg'
 import { useSelector } from 'react-redux';
 import SignupFormModal from '../SignupFormModal';
-import { useModal } from '../../context/Modal';
 import OpenModalButton from '../OpenModalButton';
 
 function LandingPage() {

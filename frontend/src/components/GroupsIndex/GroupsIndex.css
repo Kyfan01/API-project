@@ -2,15 +2,20 @@
     display: flex;
     justify-content: space-evenly;
     background-color: #f8c200;
+    border-top: black 2px solid;
+    border-bottom: black 2px solid;
+    padding: 10px 0 10px 0;
 }
 
 #group-index-event-header {
     color: gray;
     text-decoration: none;
+    font-size: 2em;
 }
 
 #group-index-group-header {
     color: #00a4a9;
+    font-size: 2em;
 }
 
 

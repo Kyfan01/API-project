@@ -1,12 +1,40 @@
 .profile-dropdown {
   position: absolute;
-  top: 8%;
+  top: 25px;
   right: 1%;
+  list-style-type: none;
 }
 
 #navlogo {
   height: 50px;
   width: auto;
+}
+
+.profile-dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 5px;
+  padding: 20px;
+  border: black 3px solid;
+}
+
+.profile-dropdown-item {
+  margin-bottom: 8px;
+}
+
+.profile-logout-button-container {
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: black 2px solid;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-dropdown-guest-item {
+  margin-bottom: 8px;
+  cursor: pointer;
 }
 
 .navbar {

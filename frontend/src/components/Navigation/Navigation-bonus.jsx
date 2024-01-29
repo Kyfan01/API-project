@@ -16,9 +16,9 @@ function Navigation({ isLoaded }) {
         <li>
           <NavLink to="/groups/new" className={hideCreateGroup}>Start a new group</NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/">Home</NavLink>
-        </li>
+        </li> */}
         {isLoaded && (
           <li>
             <ProfileButton className="profile-button" user={sessionUser} />
