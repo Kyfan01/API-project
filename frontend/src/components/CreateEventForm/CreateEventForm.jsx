@@ -44,7 +44,9 @@ export function CreateEventForm() {
         if (isPrivate === "") errObj.private = "Visibility Type is required"
         if (!capacity) errObj.capacity = 'Capacity is required'
         if (capacity < 1) errObj.capacity = "Capacity must be a positive integer"
+        if (isNaN(capacity)) errObj.capacity = "Capacity must be a number"
         if (!price) errObj.price = 'Price is required'
+        if (isNaN(price)) errObj.price = 'Price must be a number'
         if (!startDate) errObj.startDate = 'Start date is required'
         if (Date.parse(startDate) <= Date.parse(new Date())) errObj.startDate = "Event start time must be in the future"
         if (!endDate) errObj.endDate = 'End date is required'
