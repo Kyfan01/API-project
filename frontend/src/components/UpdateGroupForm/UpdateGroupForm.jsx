@@ -44,10 +44,6 @@ export function UpdateGroupForm() {
         setCity(cityState.split(',')[0]?.trim())
         setState(cityState.split(',')[1]?.trim())
 
-        console.log(isPrivate)
-        setIsPrivate(!isPrivate)
-        console.log(isPrivate)
-
         setValidationErr({})
         const errObj = {}
 
@@ -68,7 +64,7 @@ export function UpdateGroupForm() {
                 name,
                 about,
                 type,
-                private: Boolean(isPrivate),
+                private: isPrivate === 'true' ? true : false,
             }
 
             console.log('new group is ', newGroup)
@@ -144,8 +140,8 @@ export function UpdateGroupForm() {
                     <div className='update-group-input-section'>
                         <h2>{"Is this group private or public?"}</h2>
                         <select name="isPrivate" value={isPrivate || ''} onChange={e => setIsPrivate(e.target.value)}>
-                            <option value={true}>Private</option>
-                            <option value={false}>Public</option>
+                            <option value={'true'}>Private</option>
+                            <option value={'false'}>Public</option>
                         </select>
                         <div>
                             {'private' in validationErr && (<span className='validation-error'>{validationErr.private}</span>)}
