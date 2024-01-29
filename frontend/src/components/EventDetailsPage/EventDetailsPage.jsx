@@ -22,7 +22,7 @@ export function EventDetailsPage() {
     const event = useSelector(state => state.currEvent)
 
     useEffect(() => {
-        dispatch(fetchGroupDetailsThunk(event?.Group?.id))
+        if (event?.Group?.id) dispatch(fetchGroupDetailsThunk(event?.Group?.id))
     }, [dispatch, event])
 
     const group = useSelector(state => state.currGroup)
@@ -69,8 +69,6 @@ export function EventDetailsPage() {
                     <div className='event-details-event-info-container'>
                         <div className='event-details-event-date'>
                             <div>
-
-
                             </div>
                             <div className='event-details-start-end'>
                                 <i className="fa-regular fa-clock"></i>
