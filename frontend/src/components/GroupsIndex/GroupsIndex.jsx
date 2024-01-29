@@ -29,9 +29,7 @@ export function GroupIndex() {
                         {groups.map(group => <GroupsIndexCard group={group} key={group.id} />)}
                     </div>
                 </div>
-
             </div>
-
         </div>
     )
 }

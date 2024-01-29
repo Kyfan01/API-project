@@ -37,7 +37,7 @@ export function CreateGroupForm() {
         if (!name) errObj.name = 'Name is required'
         if (name && name.length > 60) errObj.name = 'Name must be 60 characters or less'
         if (!about) errObj.about = "Description is required"
-        if (about.length < 50) errObj.about = "Description must be at least 50 characters long"
+        if (about.length < 30) errObj.about = "Description must be at least 30 characters long"
         if (type === "") errObj.type = "Group Type is required"
         if (isPrivate === "") errObj.private = "Visibility Type is required"
         if (imageUrl && !(okImageUrlEndings.includes(imageUrlEnding))) errObj.imageUrl = "Image URL needs to end in .jpg, .jpeg, or .png"

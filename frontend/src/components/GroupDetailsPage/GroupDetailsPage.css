@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 20px 12% 20px 12%;
 }
 
 .group-details-breadcrumb {
     margin-top: 5vh;
-    margin-left: 30px;
 }
 
 .group-details-upper-container {
@@ -40,17 +40,19 @@
     display: flex;
     flex-direction: column;
     width: 50%;
+    padding-left: 20px;
+    justify-content: space-between;
 }
 
 .group-details-upper-info>h1 {
     overflow-wrap: break-word;
+    margin-top: 0;
 }
 
 .group-details-join-group-button-container>button {
-    background-color: var(--purple);
+    background-color: red;
     width: 50%;
-    align-self: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     height: 30px;
     box-shadow: 2px 2px;
 }
@@ -61,6 +63,19 @@
 
 .group-details-events-container {
     margin-left: 20px;
+}
+
+.group-details-create-event-button,
+.group-details-update-button,
+.modal-delete-button,
+.event-details-update-button {
+    background-color: darkgray;
+    width: 100px;
+    margin-right: 10px;
+}
+
+.group-details-buttons {
+    justify-self: flex-end;
 }
 
 .hidden {

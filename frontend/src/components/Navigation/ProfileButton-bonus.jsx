@@ -5,12 +5,13 @@ import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const navigate = useNavigate()
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -37,6 +38,7 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    navigate('/')
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -49,7 +51,7 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <div className="profile-dropdown-menu">
-            <li className='profile-dropdown-item'>Hello, {user.username}</li>
+            <li className='profile-dropdown-item'>Hello, {user.firstName}</li>
             <li className='profile-dropdown-item'>{user.firstName} {user.lastName}</li>
             <li className='profile-dropdown-item'>{user.email}</li>
             <li className='profile-dropdown-item'><Link to='/groups'>View groups</Link></li>

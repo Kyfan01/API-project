@@ -26,15 +26,21 @@
 .group-page-group-card-info {
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
 
+.group-page-group-card-description {
+    overflow-wrap: break-word;
 }
 
 .group-page-group-card-name {
     color: black;
+    overflow-wrap: break-word;
 }
 
 .group-page-group-card-location {
     color: gray;
+    overflow-wrap: break-word;
 }
 
 .group-page-group-card-event-info {

@@ -2,6 +2,7 @@
     text-decoration: none;
     color: black;
     width: 100%;
+    height: 20%;
 }
 
 .event-preview-card {
@@ -40,4 +41,9 @@
 
 .event-preview-card-location {
     color: gray;
+    overflow-wrap: break-word;
+}
+
+.event-preview-card-description {
+    overflow-wrap: break-word;
 }

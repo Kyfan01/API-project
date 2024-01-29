@@ -34,11 +34,11 @@ export function EventsIndex() {
                 <div>
                     <div className='event-index-card-container'>
                         <div>
-                            <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
+                            <h2>Upcoming Events ({upcomingEventsArr.length})</h2>
                             {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
                         </div>
                         <div>
-                            <h3>Past Events ({pastEventsArr.length})</h3>
+                            <h2>Past Events ({pastEventsArr.length})</h2>
                             {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
                         </div>
                     </div>

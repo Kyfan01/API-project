@@ -26,6 +26,7 @@ export function GroupDetailsPage() {
     useEffect(() => {
         dispatch(fetchGroupDetailsThunk(groupId))
         dispatch(fetchGroupEventsThunk(groupId))
+        window.scrollTo(0, 0);
     }, [dispatch, groupId])
 
     const privateStatus = group?.private ? "Private" : "Public"
@@ -48,6 +49,8 @@ export function GroupDetailsPage() {
     const pastEventsArr = groupEventsArr.filter(event => Date.parse(event?.startDate) < Date.now())
     pastEventsArr.sort((a, b) => (Date.parse(b.startDate) - Date.parse(a.startDate)))
 
+    const showPast = pastEventsArr.length ? true : false
+
     return (
         <div className='group-details-page'>
             <NavLink className='group-details-breadcrumb' to='/groups'>{'< Groups'}</NavLink>
@@ -58,17 +61,19 @@ export function GroupDetailsPage() {
                     </div>
                 </div>
                 <div className='group-details-upper-info'>
-                    <h1>{group?.name}</h1>
-                    <p>{group?.city}, {group?.state}</p>
-                    <p>{eventCounter} · {privateStatus}</p>
-                    <p>Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
+                    <div>
+                        <h1>{group?.name}</h1>
+                        <p>{group?.city}, {group?.state}</p>
+                        <p>{eventCounter}&nbsp; · &nbsp;{privateStatus}</p>
+                        <p>Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
+                    </div>
                     <div className='group-details-join-group-button-container'>
                         {hideJoinButton !== 'hidden' && <button onClick={() => alert('Feature coming soon')}>Join this Group</button>}
 
                     </div>
-                    <div>
-                        <button className={`group-details-create-event-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create event</button>
-                        <button className={`group-details-update-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/update`)}>Update</button>
+                    <div className='group-details-buttons'>
+                        {isOrganizer && <button className={`group-details-create-event-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create event</button>}
+                        {isOrganizer && <button className={`group-details-update-button ${hideOrgButton}`} onClick={() => navigate(`/groups/${groupId}/update`)}>Update</button>}
                         {isOrganizer && <OpenModalButton className={`group-details-delete-button ${hideOrgButton}`} buttonText='Delete' modalComponent={<DeleteGroupModal group={group} />} />}
                     </div>
                 </div>
@@ -76,22 +81,22 @@ export function GroupDetailsPage() {
 
             <div className='group-details-lower-container'>
                 <div>
-                    <h3>Organizer</h3>
+                    <h2>Organizer</h2>
                     <p>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                 </div>
                 <div>
-                    <h3>{`What we're about:`}</h3>
+                    <h2>{`What we're about:`}</h2>
                     <p>{group?.about}</p>
                 </div>
             </div>
             <div className='group-details-events-container'>
                 <div>
-                    <h3>Upcoming Events ({upcomingEventsArr.length})</h3>
+                    <h2>Upcoming Events ({upcomingEventsArr.length})</h2>
                     {upcomingEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
                 </div>
                 <div>
-                    <h3>Past Events ({pastEventsArr.length})</h3>
-                    {pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
+                    {showPast && <h2>Past Events ({pastEventsArr.length})</h2>}
+                    {showPast && pastEventsArr.map(event => <EventPreviewCard key={event.id} event={event} />)}
                 </div>
             </div>
         </div>

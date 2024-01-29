@@ -29,7 +29,7 @@ function LandingPage() {
             </div>
 
             <div className="landing-page-all-cards-container">
-                <LandingPageCard imageUrl={highFive} alt="An image of a high five" path={'/groups'} cardTitle='See all Groups' cardText='Look at all the basketball groups registered on Ballr!' isCardDisabled={''} />
+                <LandingPageCard imageUrl={highFive} alt="An image of a high five" path={'/groups'} cardTitle='See all groups' cardText='Look at all the basketball groups registered on Ballr!' isCardDisabled={''} />
                 <LandingPageCard imageUrl={bballCourt} alt="An image of a basketball court" path={'/events'} cardTitle='Find an event' cardText='Search for basketball events registered on Ballr!' isCardDisabled={''} />
                 <LandingPageCard imageUrl={basketballPlayers} alt="An image of two basketball players" path={'/groups/new'} cardTitle='Start a new group' cardText='Register a new group on Ballr!' isCardDisabled={isCardDisabled} />
             </div>
